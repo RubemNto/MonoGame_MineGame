@@ -27,22 +27,22 @@ namespace mineGame
             {
                 Point lastPosition = _position;
                 _keysReleased = false;
-                if (kState.IsKeyDown(Keys.A))
+                if (kState.IsKeyDown(Keys.A) || kState.IsKeyDown(Keys.Left))
                 {
                     _position.X--;
                     _dir = _direction[0];
                 }
-                else if (kState.IsKeyDown(Keys.W))
+                else if (kState.IsKeyDown(Keys.W) || kState.IsKeyDown(Keys.Up))
                 {
                     _position.Y--;
                     _dir = _direction[1];
                 }
-                else if (kState.IsKeyDown(Keys.S))
+                else if (kState.IsKeyDown(Keys.S) || kState.IsKeyDown(Keys.Down))
                 {
                     _position.Y++;
                     _dir = _direction[2];
                 }
-                else if (kState.IsKeyDown(Keys.D))
+                else if (kState.IsKeyDown(Keys.D) || kState.IsKeyDown(Keys.Right))
                 {
                     _position.X++;
                     _dir = _direction[3];
