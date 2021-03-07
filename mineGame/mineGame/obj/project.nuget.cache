@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "yuO9UR8HIP/WGSkgUJIOzYZ/X/kNrdsnvymTes/FRDEnWbnyYNh9LfGulb79BBaasKUMbZn2oOuRRkfOUvWReg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\rubem\\OneDrive\\Documentos\\GitHub\\MonoGame_MineGame\\mineGame\\mineGame\\mineGame.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\rubem\\.nuget\\packages\\monogame.content.builder.task\\3.8.0.1641\\monogame.content.builder.task.3.8.0.1641.nupkg.sha512",
+    "C:\\Users\\rubem\\.nuget\\packages\\monogame.framework.desktopgl\\3.8.0.1641\\monogame.framework.desktopgl.3.8.0.1641.nupkg.sha512"
+  ],
+  "logs": []
+}
