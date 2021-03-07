@@ -19,6 +19,7 @@ namespace mineGame
 
         public void Update(GameTime gameTime)
         {
+            
         }
 
         public void Draw(SpriteBatch sb)

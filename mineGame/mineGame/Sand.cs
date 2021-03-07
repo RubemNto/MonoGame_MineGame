@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace mineGame
 {
-    public class Sand : Movement
+    public class Sand
     {
         private Point _position;
         private Game1 game;
