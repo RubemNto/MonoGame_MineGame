@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -9,14 +10,20 @@ namespace mineGame
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private Player _player;
-        private Sand _sand;
-        private Diamond _diamond;
-        private Bomb _bomb;
-        private Rock _rock;
-        private Brick _brick;
+        //private Texture2D[] Textures;
+        Rectangle position;
+        //private Player _player;
+
+        //private Sand _sand;
+        //private Diamond _diamond;
+        //private Bomb _bomb;
+        //private Rock _rock;
+        //private Brick _brick;
+        private GameManager GM;
 
         public char[,] level;
+        public int tileSize = 32;
+        public bool pressingDown = false;
 
         public Game1()
         {
@@ -28,6 +35,13 @@ namespace mineGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            GM = new GameManager(this);
+            GM.loadLevel("level1.txt", out level);
+            int windowHeight = level.GetLength(1) * tileSize;
+            int windowWidth = tileSize * level.GetLength(0);
+            _graphics.PreferredBackBufferWidth = windowWidth;
+            _graphics.PreferredBackBufferHeight = windowHeight;
+            _graphics.ApplyChanges();
 
             base.Initialize();
         }
@@ -44,6 +58,16 @@ namespace mineGame
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            if (Keyboard.GetState().IsKeyDown(Keys.Space) && pressingDown == false)
+            {
+                GM.sands.RemoveAt(0);
+                pressingDown = true;
+            }
+            else if (Keyboard.GetState().IsKeyUp(Keys.Space) && pressingDown == true)
+            {
+                pressingDown = false;
+            }
+
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -51,7 +75,62 @@ namespace mineGame
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            GraphicsDevice.Clear(Color.Black);
+            _spriteBatch.Begin();
+
+            position = new Rectangle(0, 0, tileSize, tileSize);
+
+            for (int i = 0; i < level.GetLength(0); i++)
+            {
+                for (int b = 0; b < level.GetLength(1); b++)
+                {
+                    position.X = i * tileSize;
+                    position.Y = b * tileSize;
+
+                    switch (level[i, b])
+                    {
+                        case '#':
+                            for (int c = 0; c < GM.walls.Count; c++)
+                            {
+                                if (GM.walls[c].pos == new Vector2(position.X,position.Y))
+                                {
+                                    //Console.WriteLine("Found Wall");
+                                    //if (position.X % 3 == 0 && position.Y % 3 == 0)
+                                    //    _spriteBatch.Draw(GM.walls[c].texture, GM.walls[c].pos, Color.Green);
+                                    //else
+                                    _spriteBatch.Draw(GM.walls[c].texture, GM.walls[c].pos, Color.White);
+                                    //break;
+                                }
+                            }
+                            break;
+                        case 's':
+                            for (int c = 0; c < GM.sands.Count; c++)
+                            {
+                                if (GM.sands[c].pos == new Vector2(position.X, position.Y))
+                                {
+                                    //Console.WriteLine("Found Wall");
+                                    _spriteBatch.Draw(GM.sands[c].texture, GM.sands[c].pos, Color.White);
+                                    break;
+                                }
+                            }
+                            break;
+                        case 'x':
+                            for (int c = 0; c < GM.portals.Count; c++)
+                            {
+                                if (GM.portals[c].pos == new Vector2(position.X, position.Y))
+                                {
+                                    //Console.WriteLine("Found Wall");
+                                    _spriteBatch.Draw(GM.portals[c].texture, GM.portals[c].pos, Color.White);
+                                    break;
+                                }
+                            }
+                            break;
+
+                    }
+                }
+            }
+            _spriteBatch.End();
 
             // TODO: Add your drawing code here
 
@@ -60,54 +139,9 @@ namespace mineGame
 
         public bool FreeTile(int x, int y)
         {
-            
+            return true;            
         }
         
-        void LoadLevel(string levelFile)
-        {
-            string[] linhas = File.ReadAllLines();
-            int nrLinhas = linhas.Length;
-            int nrColunas = linhas[0].Length;
-
-            level = new char[nrColunas, nrLinhas];
-
-            for (int x = 0; x < nrColunas; x++)
-            {
-                for (int y = 0; y < nrLinhas; y++)
-                {
-                    switch (linhas[y][x])
-                    {
-                        case 'P':
-                            _player = new Player(this,x,y);
-                            level[x, y] = ' ';
-                            break;
-                        case 'S':
-                            _sand = new Sand(this,x,y);
-                            level[x, y] = ' ';
-                            break;
-                        case 'D' :
-                            _diamond = new Diamond(this,x,y);
-                            level[x, y] = ' ';
-                            break;
-                        case 'B' :
-                            _bomb = new Bomb(this,x,y);
-                            level[x, y] = ' ';
-                            break;
-                        case 'R' :
-                            _rock = new Rock(this,x,y);
-                            level[x, y] = ' ';
-                            break;
-                        case 'K' :
-                            _brick = new Brick(this,x,y);
-                            level[x, y] = ' ';
-                            break;
-                        default:
-                            level[x, y] = linhas[y][x];
-                            break;
-                    }
-                }
-            }
-            
-        }
+        
     }
 }
