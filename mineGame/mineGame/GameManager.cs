@@ -14,6 +14,7 @@ namespace mineGame
         public List<wall> walls = new List<wall>();
         public List<Sand> sands = new List<Sand>();
         public List<Portal> portals = new List<Portal>();
+        public Player player;
 
 
         public GameManager(Game1 g) 
@@ -48,6 +49,7 @@ namespace mineGame
                     }
                     else if (level[l, c] == 'p') 
                     {
+                        player = new Player(game,new Vector2(l * game.tileSize, c * game.tileSize));
                     }
                     else if (level[l, c] == 's')
                     {

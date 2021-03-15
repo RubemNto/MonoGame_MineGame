@@ -19,7 +19,7 @@ namespace mineGame
         //private Bomb _bomb;
         //private Rock _rock;
         //private Brick _brick;
-        private GameManager GM;
+        public GameManager GM;
 
         public char[,] level;
         public int tileSize = 32;
@@ -57,16 +57,17 @@ namespace mineGame
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Space) && pressingDown == false)
-            {
-                GM.sands.RemoveAt(0);
-                pressingDown = true;
-            }
-            else if (Keyboard.GetState().IsKeyUp(Keys.Space) && pressingDown == true)
-            {
-                pressingDown = false;
-            }
+            if(GM.player != null)
+            GM.player.checkOrientation(ref pressingDown);
+            //if (Keyboard.GetState().IsKeyDown(Keys.Space) && pressingDown == false && GM.sands.Count != 0)
+            //{
+            //    GM.sands.RemoveAt(0);
+            //    pressingDown = true;
+            //}
+            //else if (Keyboard.GetState().IsKeyUp(Keys.Space) && pressingDown == true)
+            //{
+            //    pressingDown = false;
+            //}
 
             // TODO: Add your update logic here
 
@@ -126,7 +127,13 @@ namespace mineGame
                                 }
                             }
                             break;
-
+                        case 'p':
+                            if (GM.player.faceRight == false)
+                                _spriteBatch.Draw(GM.player.texture, new Rectangle((int)GM.player._position.X, (int)GM.player._position.Y, 32, 32), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 1);
+                            else
+                                _spriteBatch.Draw(GM.player.texture, new Rectangle((int)GM.player._position.X, (int)GM.player._position.Y, 32, 32), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 1);
+                            
+                            break;
                     }
                 }
             }
