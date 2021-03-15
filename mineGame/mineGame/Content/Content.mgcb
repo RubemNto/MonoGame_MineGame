@@ -85,6 +85,18 @@
 /processorParam:TextureFormat=Color
 /build:enemyV.png
 
+#begin Lazy Afternoon - Pushmo World Soundtrack.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Lazy Afternoon - Pushmo World Soundtrack.mp3
+
+#begin moveSoundEffect.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:moveSoundEffect.wav
+
 #begin player.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -120,6 +132,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:sand.png
+
+#begin sandSoundEffect.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sandSoundEffect.wav
 
 #begin wall.png
 /importer:TextureImporter

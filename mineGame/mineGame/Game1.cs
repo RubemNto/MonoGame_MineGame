@@ -1,6 +1,8 @@
 ﻿using System.IO;
 using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -25,6 +27,9 @@ namespace mineGame
         public int tileSize = 32;
         public bool pressingDown = false;
 
+        Song backgroundMusic;
+        
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -37,6 +42,7 @@ namespace mineGame
             // TODO: Add your initialization logic here
             GM = new GameManager(this);
             GM.loadLevel("level1.txt", out level);
+
             int windowHeight = level.GetLength(1) * tileSize;
             int windowWidth = tileSize * level.GetLength(0);
             _graphics.PreferredBackBufferWidth = windowWidth;
@@ -46,15 +52,34 @@ namespace mineGame
             base.Initialize();
         }
 
+        void MediaPlayer_MediaStateChanged(object sender, System.EventArgs e)
+        {
+            //0.0f is silent, 1.0f is full volume
+            MediaPlayer.Volume = 0f;
+            MediaPlayer.IsRepeating = true;
+
+            MediaPlayer.Play(backgroundMusic);
+        }
+
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            this.backgroundMusic = Content.Load<Song>("Lazy Afternoon - Pushmo World Soundtrack");
+
+            MediaPlayer.Play(backgroundMusic);
+            MediaPlayer.Volume = 1f;
+            //MediaPlayer.
+            //MediaPlayer.
+            //  Uncomment the following line will also loop the song
+            MediaPlayer.IsRepeating = true;
+            //MediaPlayer.MediaStateChanged += MediaPlayer_MediaStateChanged;
 
             // TODO: use this.Content to load your game content here
         }
 
         protected override void Update(GameTime gameTime)
         {
+            IsMouseVisible = false;
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             if(GM.player != null)

@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Collections;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -15,11 +16,13 @@ namespace mineGame
         public List<Sand> sands = new List<Sand>();
         public List<Portal> portals = new List<Portal>();
         public Player player;
+        //Song backgroundMusic;
 
 
         public GameManager(Game1 g) 
         {
             game = g;
+            //backgroundMusic = game.Content.Load<Song>("Lazy Afternoon - Pushmo World Soundtrack");
         }
 
         //public List<wall> walls = new List<wall>();

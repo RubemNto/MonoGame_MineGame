@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 using System;
 
 namespace mineGame
@@ -10,6 +11,7 @@ namespace mineGame
         //private Point _position;
         private Game1 game;
         private bool _keysReleased = true;
+        bool moved = false;
         private char[] _direction = {
             'L','U','D', 'R'
         };
@@ -18,11 +20,16 @@ namespace mineGame
 
         public Texture2D texture;
         public Vector2 _position;
-        public bool faceRight;
+        public bool faceRight = true;
+        SoundEffect moveSound;
+        SoundEffect sandDestruction;
 
         public Player(Game1 g, Vector2 position)
         {
             game = g;
+            moveSound = g.Content.Load<SoundEffect>("moveSoundEffect");
+            sandDestruction = g.Content.Load<SoundEffect>("sandSoundEffect");
+
             texture = g.Content.Load<Texture2D>("player");
             _position = position;
         }
@@ -39,6 +46,8 @@ namespace mineGame
                     _dir = _direction[1];
                     _position.Y-=32;
                     pressingKeyDown = true;
+                    moved = true;
+
                 }
                 else if (keyboardState.IsKeyDown(Keys.Down))
                 {
@@ -46,6 +55,8 @@ namespace mineGame
                     _dir = _direction[2];
                     _position.Y+=32;
                     pressingKeyDown = true;
+                    moved = true;
+
                 }
                 else if (keyboardState.IsKeyDown(Keys.Left))
                 {
@@ -54,6 +65,8 @@ namespace mineGame
                     faceRight = false;
                     _position.X-=32;
                     pressingKeyDown = true;
+                    moved = true;
+
                 }
                 else if (keyboardState.IsKeyDown(Keys.Right))
                 {
@@ -62,14 +75,25 @@ namespace mineGame
                     faceRight = true;
                     _position.X+=32;
                     pressingKeyDown = true;
+                    moved = true;
+
                 }
+
 
                 for (int i = 0; i < game.GM.walls.Count; i++) 
                 {
                     if (game.GM.walls[i].pos == _position) 
                     {
                         _position = pastPosition;
+                        moved = false;
+                        break;
                     }
+                }
+
+                if (moved)
+                {
+                    moveSound.Play(0.2f, 1f, 0f);
+                    moved = false;
                 }
 
                 for (int i = 0; i < game.GM.sands.Count; i++)
@@ -77,6 +101,7 @@ namespace mineGame
                     if (game.GM.sands[i].pos == _position)
                     {
                         game.GM.sands.RemoveAt(i);
+                        sandDestruction.Play(0.5f, 1f, 0f);
                     }
                 }
             }
