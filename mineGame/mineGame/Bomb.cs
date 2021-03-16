@@ -5,14 +5,15 @@ namespace mineGame
 {
     public class Bomb : Movement
     {
-        private Point _position;
-        private Game1 game;
-        
-        public Bomb(Game1 game1, int x, int y)
+        public Texture2D texture;
+        public Vector2 pos;
+
+        public Bomb(Game1 g, Vector2 position)
         {
-            _position = new Point(x, y);
+            texture = g.Content.Load<Texture2D>("bombOff");
+            pos = position;
         }
-        
+
         public void LoadContent()
         {
         }

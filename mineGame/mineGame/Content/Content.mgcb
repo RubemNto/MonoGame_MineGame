@@ -49,6 +49,12 @@
 /processorParam:TextureFormat=Color
 /build:brick.png
 
+#begin collection.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:collection.wav
+
 #begin diamond.png
 /importer:TextureImporter
 /processor:TextureProcessor

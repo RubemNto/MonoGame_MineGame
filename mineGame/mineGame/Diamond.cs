@@ -5,14 +5,15 @@ namespace mineGame
 {
     public class Diamond : Movement
     {
-        private Point _position;
-        private Game1 game;
-        
-        public Diamond(Game1 game1, int x, int y)
+        public Texture2D texture;
+        public Vector2 pos;
+
+        public Diamond(Game1 g, Vector2 position)
         {
-            _position = new Point(x, y);
+            texture = g.Content.Load<Texture2D>("diamond");
+            pos = position;
         }
-        
+
         public void LoadContent()
         {
         }

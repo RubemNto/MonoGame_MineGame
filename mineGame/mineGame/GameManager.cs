@@ -16,14 +16,19 @@ namespace mineGame
         public List<Sand> sands = new List<Sand>();
         public List<Portal> portals = new List<Portal>();
         public List<Brick> bricks = new List<Brick>();
+        public List<Bomb> bombs = new List<Bomb>();
+        public List<Diamond> diamonds = new List<Diamond>();
+
+        private int points = 0;
+
         public Player player;
         //Song backgroundMusic;
 
 
-        public GameManager(Game1 g) 
+        public GameManager(Game1 g,int pointsValue) 
         {
             game = g;
-            //backgroundMusic = game.Content.Load<Song>("Lazy Afternoon - Pushmo World Soundtrack");
+            points = pointsValue;
         }
 
         //public List<wall> walls = new List<wall>();
@@ -61,9 +66,11 @@ namespace mineGame
                     }
                     else if (level[l, c] == 'd')
                     {
+                        diamonds.Add(new Diamond(game, new Vector2(l * game.tileSize, c * game.tileSize)));
                     }
                     else if (level[l, c] == 'b')
                     {
+                        bombs.Add(new Bomb(game, new Vector2(l * game.tileSize, c * game.tileSize)));
                     }
                     else if (level[l, c] == 'r')
                     {

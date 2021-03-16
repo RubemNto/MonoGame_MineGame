@@ -25,14 +25,16 @@ namespace mineGame
 
         public bool faceRight = true;
         SoundEffect moveSound;
-        SoundEffect sandDestruction;
+        SoundEffect sandDestructionSound;
+        SoundEffect collectionSound;
 
         public Player(Game1 g, Vector2 position)
         {
             game = g;
             speed = game.tileSize * 8;
             moveSound = g.Content.Load<SoundEffect>("moveSoundEffect");
-            sandDestruction = g.Content.Load<SoundEffect>("sandSoundEffect");
+            sandDestructionSound = g.Content.Load<SoundEffect>("sandSoundEffect");
+            collectionSound = g.Content.Load<SoundEffect>("collection");
 
             texture = g.Content.Load<Texture2D>("player");
             _position = position;
@@ -137,7 +139,16 @@ namespace mineGame
                     if (game.GM.sands[i].pos == _movementDestination)
                     {
                         game.GM.sands.RemoveAt(i);
-                        sandDestruction.Play(0.5f, 1f, 0f);
+                        sandDestructionSound.Play(0.5f, 1f, 0f);
+                    }
+                }
+
+                for (int i = 0; i < game.GM.diamonds.Count; i++)
+                {
+                    if (game.GM.diamonds[i].pos == _movementDestination)
+                    {
+                        game.GM.diamonds.RemoveAt(i);
+                        collectionSound.Play(0.5f, 1f, 0f);
                     }
                 }
             }

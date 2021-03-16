@@ -24,7 +24,7 @@ namespace mineGame
         public GameManager GM;
 
         public char[,] level;
-        public int tileSize = 50;
+        public int tileSize = 32;
         public bool pressingDown = false;
 
         Song backgroundMusic;
@@ -172,13 +172,35 @@ namespace mineGame
                                 {
                                     //Console.WriteLine("Found Wall");
                                     _spriteBatch.Draw(GM.bricks[c].texture, new Rectangle((int)GM.bricks[c].pos.X, (int)GM.bricks[c].pos.Y, tileSize, tileSize), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
-
                                     //_spriteBatch.Draw(GM.bricks[c].texture, GM.bricks[c].pos, Color.White);
                                     break;
                                 }
                             }
                             break;
-
+                        case 'b':
+                            for (int c = 0; c < GM.bombs.Count; c++)
+                            {
+                                if (GM.bombs[c].pos == new Vector2(position.X, position.Y))
+                                {
+                                    //Console.WriteLine("Found Wall");
+                                    _spriteBatch.Draw(GM.bombs[c].texture, new Rectangle((int)GM.bombs[c].pos.X, (int)GM.bombs[c].pos.Y, tileSize, tileSize), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
+                                    //_spriteBatch.Draw(GM.bricks[c].texture, GM.bricks[c].pos, Color.White);
+                                    break;
+                                }
+                            }
+                            break;
+                        case 'd':
+                            for (int c = 0; c < GM.diamonds.Count; c++)
+                            {
+                                if (GM.diamonds[c].pos == new Vector2(position.X, position.Y))
+                                {
+                                    //Console.WriteLine("Found Wall");
+                                    _spriteBatch.Draw(GM.diamonds[c].texture, new Rectangle((int)GM.diamonds[c].pos.X, (int)GM.diamonds[c].pos.Y, tileSize, tileSize), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
+                                    //_spriteBatch.Draw(GM.bricks[c].texture, GM.bricks[c].pos, Color.White);
+                                    break;
+                                }
+                            }
+                            break;
                     }
                 }
             }
