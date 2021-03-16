@@ -15,6 +15,7 @@ namespace mineGame
         public List<wall> walls = new List<wall>();
         public List<Sand> sands = new List<Sand>();
         public List<Portal> portals = new List<Portal>();
+        public List<Brick> bricks = new List<Brick>();
         public Player player;
         //Song backgroundMusic;
 
@@ -66,6 +67,7 @@ namespace mineGame
                     }
                     else if (level[l, c] == 'r')
                     {
+                        bricks.Add(new Brick(game, new Vector2(l * game.tileSize, c * game.tileSize)));
                     }
                     else if (level[l, c] == 'v')
                     {

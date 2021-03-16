@@ -5,14 +5,15 @@ namespace mineGame
 {
     public class Brick
     {
-        private Point _position;
-        private Game1 game;
-        
-        public Brick(Game1 game1, int x, int y)
+        public Texture2D texture;
+        public Vector2 pos;
+
+        public Brick(Game1 g, Vector2 position)
         {
-            _position = new Point(x, y);
+            texture = g.Content.Load<Texture2D>("brick");
+            pos = position;
         }
-        
+
         public void LoadContent()
         {
         }
