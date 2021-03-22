@@ -12,15 +12,8 @@ namespace mineGame
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        //private Texture2D[] Textures;
         Rectangle position;
-        //private Player _player;
 
-        //private Sand _sand;
-        //private Diamond _diamond;
-        //private Bomb _bomb;
-        //private Rock _rock;
-        //private Brick _brick;
         public GameManager GM;
 
         public char[,] level;
@@ -40,11 +33,11 @@ namespace mineGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            GM = new GameManager(this);
-            GM.loadLevel("level1.txt", out level);
+            GM = new GameManager(this,0);
+            GM.loadLevel("level2.txt", out level);
 
-            int windowHeight = level.GetLength(1) * tileSize;
-            int windowWidth = tileSize * level.GetLength(0);
+            int windowHeight = level.GetLength(0) * tileSize;
+            int windowWidth = tileSize * level.GetLength(1);
             _graphics.PreferredBackBufferWidth = windowWidth;
             _graphics.PreferredBackBufferHeight = windowHeight;
             _graphics.ApplyChanges();
@@ -66,12 +59,12 @@ namespace mineGame
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             this.backgroundMusic = Content.Load<Song>("Lazy Afternoon - Pushmo World Soundtrack");
 
-            MediaPlayer.Play(backgroundMusic);
             MediaPlayer.Volume = 1f;
             //MediaPlayer.
             //MediaPlayer.
             //  Uncomment the following line will also loop the song
             MediaPlayer.IsRepeating = true;
+            //MediaPlayer.Play(backgroundMusic);
             //MediaPlayer.MediaStateChanged += MediaPlayer_MediaStateChanged;
 
             // TODO: use this.Content to load your game content here
@@ -82,19 +75,13 @@ namespace mineGame
             IsMouseVisible = false;
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            if (GM.player != null)
+
+            if(Keyboard.GetState().IsKeyDown(Keys.Space))
             {
-                GM.player.update(gameTime, ref pressingDown);
+                Initialize();
             }
-            //if (Keyboard.GetState().IsKeyDown(Keys.Space) && pressingDown == false && GM.sands.Count != 0)
-            //{
-            //    GM.sands.RemoveAt(0);
-            //    pressingDown = true;
-            //}
-            //else if (Keyboard.GetState().IsKeyUp(Keys.Space) && pressingDown == true)
-            //{
-            //    pressingDown = false;
-            //}
+
+            GM.UpdateGame(gameTime, ref pressingDown);
 
             // TODO: Add your update logic here
 
@@ -107,6 +94,7 @@ namespace mineGame
             GraphicsDevice.Clear(Color.Black);
             _spriteBatch.Begin(SpriteSortMode.Deferred,null, SamplerState.PointClamp, DepthStencilState.None,null);
             position = new Rectangle(0, 0, tileSize, tileSize);
+            //_spriteBatch.Draw(GM.walls[0].texture, new Rectangle(0,64, tileSize, tileSize), null, Color.Green, 0f, new Vector2(0, 0), SpriteEffects.None, 10f);
 
             for (int i = 0; i < level.GetLength(0); i++)
             {
@@ -122,14 +110,7 @@ namespace mineGame
                             {
                                 if (GM.walls[c].pos == new Vector2(position.X,position.Y))
                                 {
-                                    //Console.WriteLine("Found Wall");
-                                    //if (position.X % 3 == 0 && position.Y % 3 == 0)
-                                    //    _spriteBatch.Draw(GM.walls[c].texture, GM.walls[c].pos, Color.Green);
-                                    //else
-                                    _spriteBatch.Draw(GM.walls[c].texture, new Rectangle((int)GM.walls[c].pos.X, (int)GM.walls[c].pos.Y, tileSize, tileSize), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
-
-                                    //_spriteBatch.Draw(GM.walls[c].texture, GM.walls[c].pos, Color.White);
-                                    //break;
+                                    _spriteBatch.Draw(GM.walls[c].texture, new Rectangle((int)GM.walls[c].pos.Y, (int)GM.walls[c].pos.X, tileSize, tileSize), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
                                 }
                             }
                             break;
@@ -138,11 +119,7 @@ namespace mineGame
                             {
                                 if (GM.sands[c].pos == new Vector2(position.X, position.Y))
                                 {
-                                    //Console.WriteLine("Found Wall");
-                                    _spriteBatch.Draw(GM.sands[c].texture, new Rectangle((int)GM.sands[c].pos.X, (int)GM.sands[c].pos.Y, tileSize, tileSize), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
-
-                                    //_spriteBatch.Draw(GM.sands[c].texture, GM.sands[c].pos, Color.White);
-                                    break;
+                                    _spriteBatch.Draw(GM.sands[c].texture, new Rectangle((int)GM.sands[c].pos.Y, (int)GM.sands[c].pos.X, tileSize, tileSize), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
                                 }
                             }
                             break;
@@ -151,30 +128,25 @@ namespace mineGame
                             {
                                 if (GM.portals[c].pos == new Vector2(position.X, position.Y))
                                 {
-                                    //Console.WriteLine("Found Wall");
-                                    //_spriteBatch.Draw(GM.player.texture, new Rectangle((int)GM.player._position.X, (int)GM.player._position.Y, 32, 32), null, Color.Red, 0f, new Vector2(0, 0), SpriteEffects.None, 1);
-                                    _spriteBatch.Draw(GM.portals[c].texture,new Rectangle((int)GM.portals[c].pos.X, (int)GM.portals[c].pos.Y,tileSize,tileSize),null, Color.White,0f,new Vector2(0,0),SpriteEffects.None,0);
-                                    break;
+                                    _spriteBatch.Draw(GM.portals[c].texture,new Rectangle((int)GM.portals[c].pos.Y, (int)GM.portals[c].pos.X,tileSize,tileSize),null, Color.White,0f,new Vector2(0,0),SpriteEffects.None,0);
                                 }
                             }
                             break;
                         case 'p':
                             if (GM.player.faceRight == false)
-                                _spriteBatch.Draw(GM.player.texture, new Rectangle((int)GM.player._position.X, (int)GM.player._position.Y, tileSize, tileSize), null, Color.Red, 0f, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 1);
+                                _spriteBatch.Draw(GM.player.texture, new Rectangle((int)GM.player._position.Y, (int)GM.player._position.X, tileSize, tileSize), null, Color.Red, 0f, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 1f);
                             else
-                                _spriteBatch.Draw(GM.player.texture, new Rectangle((int)GM.player._position.X, (int)GM.player._position.Y, tileSize, tileSize), null, Color.Red, 0f, new Vector2(0, 0), SpriteEffects.None, 1);
-                            
+                                _spriteBatch.Draw(GM.player.texture, new Rectangle((int)GM.player._position.Y, (int)GM.player._position.X, tileSize, tileSize), null, Color.Red, 0f, new Vector2(0, 0), SpriteEffects.None,1f);
                             break;
                         case 'r':
-                            for (int c = 0; c < GM.bricks.Count; c++)
+                            for (int c = 0; c < GM.rocks.Count; c++)
                             {
-                                if (GM.bricks[c].pos == new Vector2(position.X, position.Y))
-                                {
-                                    //Console.WriteLine("Found Wall");
-                                    _spriteBatch.Draw(GM.bricks[c].texture, new Rectangle((int)GM.bricks[c].pos.X, (int)GM.bricks[c].pos.Y, tileSize, tileSize), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
-                                    //_spriteBatch.Draw(GM.bricks[c].texture, GM.bricks[c].pos, Color.White);
-                                    break;
-                                }
+                                //if (GM.rocks[c].pos == new Vector2(position.X, position.Y))
+                                //{
+                                    //Console.WriteLine("{0} -> {1}", GM.rocks[c].pos, position);
+                                    //Console.WriteLine("DrawingRock");
+                                    _spriteBatch.Draw(GM.rocks[c].texture, new Rectangle((int)GM.rocks[c].pos.Y, (int)GM.rocks[c].pos.X, tileSize, tileSize), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 1f);
+                                //}
                             }
                             break;
                         case 'b':
@@ -182,10 +154,7 @@ namespace mineGame
                             {
                                 if (GM.bombs[c].pos == new Vector2(position.X, position.Y))
                                 {
-                                    //Console.WriteLine("Found Wall");
-                                    _spriteBatch.Draw(GM.bombs[c].texture, new Rectangle((int)GM.bombs[c].pos.X, (int)GM.bombs[c].pos.Y, tileSize, tileSize), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
-                                    //_spriteBatch.Draw(GM.bricks[c].texture, GM.bricks[c].pos, Color.White);
-                                    break;
+                                    _spriteBatch.Draw(GM.bombs[c].texture, new Rectangle((int)GM.bombs[c].pos.Y, (int)GM.bombs[c].pos.X, tileSize, tileSize), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
                                 }
                             }
                             break;
@@ -193,11 +162,8 @@ namespace mineGame
                             for (int c = 0; c < GM.diamonds.Count; c++)
                             {
                                 if (GM.diamonds[c].pos == new Vector2(position.X, position.Y))
-                                {
-                                    //Console.WriteLine("Found Wall");
-                                    _spriteBatch.Draw(GM.diamonds[c].texture, new Rectangle((int)GM.diamonds[c].pos.X, (int)GM.diamonds[c].pos.Y, tileSize, tileSize), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
-                                    //_spriteBatch.Draw(GM.bricks[c].texture, GM.bricks[c].pos, Color.White);
-                                    break;
+                                { 
+                                    _spriteBatch.Draw(GM.diamonds[c].texture, new Rectangle((int)GM.diamonds[c].pos.Y, (int)GM.diamonds[c].pos.X, tileSize, tileSize), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
                                 }
                             }
                             break;

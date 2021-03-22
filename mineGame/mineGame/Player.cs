@@ -52,32 +52,32 @@ namespace mineGame
         {
             if (originalPos != destination)
             {
-                Console.WriteLine($"moving from " + originalPos + " to " + destination);
+                //Console.WriteLine($"moving from " + originalPos + " to " + destination);
                 Vector2 diference = destination - originalPos;
                 originalPos += Vector2.Normalize(diference) * Speed;
                 if (originalPos.X < destination.X && diference.X < 0)
                 {
                     originalPos = destination;
-                    Console.WriteLine("moving {0} from {1} to {2}", "player", originalPos, destination);
+                    //Console.WriteLine("moving {0} from {1} to {2}", "player", originalPos, destination);
                 }
-                else if (originalPos.X > destination.X && diference.X > 0) 
+                else if (originalPos.X > destination.X && diference.X > 0)
                 {
                     originalPos = destination;
-                    Console.WriteLine("moving {0} from {1} to {2}","player",originalPos,destination);
+                    //Console.WriteLine("moving {0} from {1} to {2}","player",originalPos,destination);
                 }
 
                 if (originalPos.Y < destination.Y && diference.Y < 0)
                 {
                     originalPos = destination;
-                    Console.WriteLine("moving {0} from {1} to {2}","player",originalPos,destination);
+                    //Console.WriteLine("moving {0} from {1} to {2}","player",originalPos,destination);
                 }
                 else if (originalPos.Y > destination.Y && diference.Y > 0)
                 {
                     originalPos = destination;
-                    Console.WriteLine("moving {0} from {1} to {2}","player",originalPos,destination);
+                    //Console.WriteLine("moving {0} from {1} to {2}","player",originalPos,destination);
                 }
-            }              
-            
+            }
+
         }
 
         void checkOrientation(ref bool pressingKeyDown)
@@ -89,51 +89,53 @@ namespace mineGame
                 Vector2 pastPosition = _position;
                 if (keyboardState.IsKeyDown(Keys.Up))
                 {
-                    Console.WriteLine("Go Up");
+                    //Console.WriteLine("Go Up");
                     _dir = _direction[1];
-                    _movementDestination.Y -= game.tileSize;
+                    _movementDestination.X -= game.tileSize;
                     pressingKeyDown = true;
                 }
                 else if (keyboardState.IsKeyDown(Keys.Down))
                 {
-                    Console.WriteLine("Go Down");
+                    //Console.WriteLine("Go Down");
                     _dir = _direction[2];
-                    _movementDestination.Y += game.tileSize;
+                    _movementDestination.X += game.tileSize;
                     pressingKeyDown = true;
                 }
                 else if (keyboardState.IsKeyDown(Keys.Left))
                 {
-                    Console.WriteLine("Go Left");
+                    //Console.WriteLine("Go Left");
                     _dir = _direction[0];
                     faceRight = false;
-                    _movementDestination.X -= game.tileSize;
+                    _movementDestination.Y -= game.tileSize;
                     pressingKeyDown = true;
                 }
                 else if (keyboardState.IsKeyDown(Keys.Right))
                 {
-                    Console.WriteLine("Go Right");
+                    //Console.WriteLine("Go Right");
                     _dir = _direction[3];
                     faceRight = true;
-                    _movementDestination.X += game.tileSize;
+                    _movementDestination.Y += game.tileSize;
                     pressingKeyDown = true;
                 }
 
-
-                for (int i = 0; i < game.GM.walls.Count; i++)
+                ////check collision with walls
+                if (freeSpace() == false && pressingKeyDown == true)
                 {
-                    if (game.GM.walls[i].pos == _movementDestination)
-                    {
-                        _movementDestination = pastPosition;
-                        moved = false;
-                        break;
-                    }
+                    _movementDestination = pastPosition;
+                    moved = false;
                 }
+                
+                if(pressingKeyDown)
+                checkRocks();
+                
 
+                //play sound when move
                 if (_movementDestination != pastPosition && pressingKeyDown == true) 
                 {
                     moveSound.Play(0.5f, 1f, 0f);
                 }
 
+                //destroy sand if destination is a sand position
                 for (int i = 0; i < game.GM.sands.Count; i++)
                 {
                     if (game.GM.sands[i].pos == _movementDestination)
@@ -143,10 +145,12 @@ namespace mineGame
                     }
                 }
 
+                //collect diamond if destination is diamond position
                 for (int i = 0; i < game.GM.diamonds.Count; i++)
                 {
                     if (game.GM.diamonds[i].pos == _movementDestination)
                     {
+                        game.GM.addPoints(5);
                         game.GM.diamonds.RemoveAt(i);
                         collectionSound.Play(0.5f, 1f, 0f);
                     }
@@ -161,12 +165,43 @@ namespace mineGame
             }
         }
 
-        public void Update(GameTime gameTime)
+        public bool freeSpace()
         {
+            //check collision with walls
+            for (int i = 0; i < game.GM.walls.Count; i++)
+            {
+                if (game.GM.walls[i].pos == _movementDestination)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
-        public void Draw(SpriteBatch sb)
+
+        public void checkRocks()
         {
+
+            //Console.Clear();
+            //get all rocks in list
+            for (int i = 0; i < game.GM.rocks.Count; i++)
+            {
+                if (game.GM.rocks[i].pos == _position + new Vector2(0, game.tileSize) && _dir == 'R') //check rocks at the right
+                {
+                    //Console.WriteLine("found Rock - Right");
+                    //Console.WriteLine("{0}", game.GM.rocks[i].pos);
+                    game.GM.rocks[i].updatePosition(game.GM.rocks[i].pos + new Vector2(0, game.tileSize));
+                    //Console.WriteLine("{0}", game.GM.rocks[i].pos);
+                }
+                else if (game.GM.rocks[i].pos == _position - new Vector2(0, game.tileSize) && _dir == 'L') //check rocks at the left
+                {
+                    //Console.WriteLine("found Rock - Left");
+                    //Console.WriteLine("{0}", game.GM.rocks[i].pos);
+                    game.GM.rocks[i].updatePosition(game.GM.rocks[i].pos - new Vector2(0, game.tileSize));
+                    //Console.WriteLine("{0}", game.GM.rocks[i].pos);
+                }
+            }
         }
+
     }
 }

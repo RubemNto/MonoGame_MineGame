@@ -18,6 +18,7 @@ namespace mineGame
         public List<Brick> bricks = new List<Brick>();
         public List<Bomb> bombs = new List<Bomb>();
         public List<Diamond> diamonds = new List<Diamond>();
+        public List<Rock> rocks = new List<Rock>();
 
         private int points = 0;
 
@@ -31,6 +32,20 @@ namespace mineGame
             points = pointsValue;
         }
 
+        public void addPoints(int value)
+        {
+            points += value;
+            Console.WriteLine("we have {0} points",points);
+        }
+
+        public void UpdateGame(GameTime gameTime,ref bool Input)
+        {
+            player.update(gameTime,ref Input);
+            foreach (Rock rock in rocks)
+            {
+                rock.update(gameTime);
+            }
+        }
         //public List<wall> walls = new List<wall>();
 
 
@@ -74,7 +89,8 @@ namespace mineGame
                     }
                     else if (level[l, c] == 'r')
                     {
-                        bricks.Add(new Brick(game, new Vector2(l * game.tileSize, c * game.tileSize)));
+                        rocks.Add(new Rock(game, new Vector2(l * game.tileSize, c * game.tileSize)));
+                        //bricks.Add(new Brick(game, new Vector2(l * game.tileSize, c * game.tileSize)));
                     }
                     else if (level[l, c] == 'v')
                     {
@@ -115,26 +131,15 @@ namespace mineGame
             if (levelAddres != null)
             {
                 string[] levelText = File.ReadAllLines(path:$"Content/{levelAddres}");
-                int columns = levelText[0].Length;
                 int lines = levelText.Length;
+                int columns = levelText[0].Length;
                 level = new char[lines, columns];
-                /*
-                # -> wall
-                p -> player
-                s -> sand
-                d -> diamond
-                b -> bomb
-                r -> rock
-                v -> vertical enemy
-                h -> horizontal enemy
-                x -> portal
-                  -> nothing
-                */
+                
                 for (int l = 0; l < lines; l++)
                 {
                     for (int c = 0; c < columns; c++)
                     {
-                        level[l, c] = levelText[c][l];
+                        level[l, c] = levelText[l][c];
                     }
                 }
             }
