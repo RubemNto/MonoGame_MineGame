@@ -72,7 +72,7 @@ namespace mineGame
 
         protected override void Update(GameTime gameTime)
         {
-            IsMouseVisible = false;
+            IsMouseVisible = true;
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
@@ -81,7 +81,7 @@ namespace mineGame
                 Initialize();
             }
 
-            GM.UpdateGame(gameTime, ref pressingDown);
+            GM.UpdateGame(this,gameTime, ref pressingDown);
 
             // TODO: Add your update logic here
 

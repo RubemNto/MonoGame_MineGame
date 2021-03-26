@@ -38,12 +38,12 @@ namespace mineGame
             Console.WriteLine("we have {0} points",points);
         }
 
-        public void UpdateGame(GameTime gameTime,ref bool Input)
+        public void UpdateGame(Game1 game,GameTime gameTime,ref bool Input)
         {
             player.update(gameTime,ref Input);
             foreach (Rock rock in rocks)
             {
-                rock.update(gameTime);
+                rock.update(gameTime,game);
             }
         }
         //public List<wall> walls = new List<wall>();

@@ -182,23 +182,16 @@ namespace mineGame
         public void checkRocks()
         {
 
-            //Console.Clear();
             //get all rocks in list
             for (int i = 0; i < game.GM.rocks.Count; i++)
             {
                 if (game.GM.rocks[i].pos == _position + new Vector2(0, game.tileSize) && _dir == 'R') //check rocks at the right
                 {
-                    //Console.WriteLine("found Rock - Right");
-                    //Console.WriteLine("{0}", game.GM.rocks[i].pos);
                     game.GM.rocks[i].updatePosition(game.GM.rocks[i].pos + new Vector2(0, game.tileSize));
-                    //Console.WriteLine("{0}", game.GM.rocks[i].pos);
                 }
                 else if (game.GM.rocks[i].pos == _position - new Vector2(0, game.tileSize) && _dir == 'L') //check rocks at the left
                 {
-                    //Console.WriteLine("found Rock - Left");
-                    //Console.WriteLine("{0}", game.GM.rocks[i].pos);
                     game.GM.rocks[i].updatePosition(game.GM.rocks[i].pos - new Vector2(0, game.tileSize));
-                    //Console.WriteLine("{0}", game.GM.rocks[i].pos);
                 }
             }
         }

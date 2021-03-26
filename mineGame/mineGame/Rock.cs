@@ -10,26 +10,121 @@ namespace mineGame
         public Vector2 pos;
         public Vector2 destination;
         public float rockSpeed;
-        
+        public bool _checkBottom;
+
         public Rock(Game1 g, Vector2 position)
         {
             texture = g.Content.Load<Texture2D>("rock");
             pos = position;
             destination = position;
             rockSpeed = g.tileSize * 8;
+            _checkBottom = true;
         }
 
-        public void update(GameTime gameTime)
+        public void update(GameTime gameTime, Game1 game)
         {
-            moveTo(ref pos, destination, rockSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds);
+            //surroundings(game);
+            if (moveTo(ref pos, destination, rockSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds))
+            {
+                checkBottom(game);
+            }
         }
 
         public void updatePosition(Vector2 Destination)
         {
             destination = Destination;
         }
+        public void freeSideWays(Game1 game)
+        {
+            Vector2 rightPos = pos + new Vector2(0, game.tileSize);
+            Vector2 leftPos = pos + new Vector2(0, -game.tileSize);
 
-        void moveTo(ref Vector2 originalPos, Vector2 destination, float Speed)
+            foreach (Rock rock in game.GM.rocks)
+            {
+                
+            }
+            foreach (Sand sand in game.GM.sands)
+            {
+                
+            }
+            foreach (wall wall in game.GM.walls)
+            {
+                
+            }
+            foreach (Bomb bomb in game.GM.bombs)
+            {
+                
+            }
+            foreach (Diamond diamond in game.GM.diamonds)
+            {
+                
+            }
+        }
+
+        private void checkBottom(Game1 game)
+        {
+            Vector2 bottomPos = pos + new Vector2(game.tileSize, 0);
+            foreach (Rock rock in game.GM.rocks)
+            {
+                if (rock.pos == bottomPos)
+                {
+                    //stop there
+                    destination = pos;
+                    return;
+                }
+            }
+            foreach (Sand sand in game.GM.sands)
+            {
+                if (sand.pos == bottomPos)
+                {
+                    //stop there
+                    destination = pos;
+                    return;
+                }
+            }
+            foreach (wall wall in game.GM.walls)
+            {
+                if (wall.pos == bottomPos)
+                {
+                    //stop there
+                    destination = pos;
+                    return;
+                }
+            }
+            foreach (Bomb bomb in game.GM.bombs)
+            {
+                if (bomb.pos == bottomPos)
+                {
+                    //stop there
+                    destination = pos;
+                    return;
+                }
+            }
+            foreach (Diamond diamond in game.GM.diamonds)
+            {
+                if (diamond.pos == bottomPos)
+                {
+                    //stop there
+                    destination = pos;
+                    return;
+                }
+            }
+            destination = bottomPos;
+            //foreach (Brick brick in game.GM.bricks)
+            //{
+            //    if (brick.pos == bottomPos)
+            //    {
+            //        //stop there
+            //    }
+            //}
+            //check if bottom pos is free
+            //if it is
+            //destination = free tile bellow
+            //else if it isn't
+            //destination = destination
+        }
+
+        bool moveTo(ref Vector2 originalPos, Vector2 destination, float Speed)
         {
             if (originalPos != destination)
             {
@@ -57,8 +152,12 @@ namespace mineGame
                     originalPos = destination;
                     //Console.WriteLine("moving {0} from {1} to {2}","player",originalPos,destination);
                 }
+                return false;
             }
-
+            else 
+            {
+                return true;
+            }
         }
 
     }
