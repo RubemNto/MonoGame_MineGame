@@ -30,35 +30,33 @@ namespace mineGame
             }
         }
 
-        public void updatePosition(Vector2 Destination)
+        public void updatePosition(Vector2 Destination,Game1 game)
         {
-            destination = Destination;
+            if(freeTile(game,Destination)) destination = Destination;
         }
-        public void freeSideWays(Game1 game)
+        public bool freeTile(Game1 game,Vector2 Destination)
         {
-            Vector2 rightPos = pos + new Vector2(0, game.tileSize);
-            Vector2 leftPos = pos + new Vector2(0, -game.tileSize);
-
             foreach (Rock rock in game.GM.rocks)
             {
-                
+                if (rock.pos == Destination) return false;
             }
             foreach (Sand sand in game.GM.sands)
             {
-                
+                if (sand.pos == Destination) return false;
             }
-            foreach (wall wall in game.GM.walls)
+            foreach (wall Wall in game.GM.walls)
             {
-                
+                if (Wall.pos == Destination) return false;
             }
             foreach (Bomb bomb in game.GM.bombs)
             {
-                
+                if (bomb.pos == Destination) return false;
             }
             foreach (Diamond diamond in game.GM.diamonds)
             {
-                
+                if (diamond.pos == Destination) return false;
             }
+            return true;
         }
 
         private void checkBottom(Game1 game)

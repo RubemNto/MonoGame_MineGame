@@ -181,17 +181,18 @@ namespace mineGame
 
         public void checkRocks()
         {
-
             //get all rocks in list
             for (int i = 0; i < game.GM.rocks.Count; i++)
             {
                 if (game.GM.rocks[i].pos == _position + new Vector2(0, game.tileSize) && _dir == 'R') //check rocks at the right
                 {
-                    game.GM.rocks[i].updatePosition(game.GM.rocks[i].pos + new Vector2(0, game.tileSize));
+                    //if(game.GM.rocks[i].freeSideWays(game) == _position + new Vector2(0, 2*game.tileSize))
+                        game.GM.rocks[i].updatePosition(game.GM.rocks[i].pos + new Vector2(0, game.tileSize),game);
                 }
                 else if (game.GM.rocks[i].pos == _position - new Vector2(0, game.tileSize) && _dir == 'L') //check rocks at the left
                 {
-                    game.GM.rocks[i].updatePosition(game.GM.rocks[i].pos - new Vector2(0, game.tileSize));
+                    //if (game.GM.rocks[i].freeSideWays(game) == _position - new Vector2(0, 2 * game.tileSize))
+                        game.GM.rocks[i].updatePosition(game.GM.rocks[i].pos - new Vector2(0, game.tileSize),game);
                 }
             }
         }
