@@ -117,7 +117,9 @@ namespace mineGame
                     faceRight = true;
                     _movementDestination.Y += game.tileSize;
                     pressingKeyDown = true;
-                }
+                } 
+                if(pressingKeyDown)
+                checkRocks();
 
                 ////check collision with walls
                 if (freeSpace() == false && pressingKeyDown == true)
@@ -125,10 +127,6 @@ namespace mineGame
                     _movementDestination = pastPosition;
                     moved = false;
                 }
-                
-                if(pressingKeyDown)
-                checkRocks();
-                
 
                 //play sound when move
                 if (_movementDestination != pastPosition && pressingKeyDown == true) 
@@ -176,6 +174,13 @@ namespace mineGame
                     return false;
                 }
             }
+            for (int i = 0; i < game.GM.rocks.Count; i++)
+            {
+                if (game.GM.rocks[i].pos == _movementDestination && (game.GM.rocks[i].freeTile(game, new Vector2(0, 32)) || game.GM.rocks[i].freeTile(game, new Vector2(0, -32))));
+                {
+                    return false;
+                }
+            }
             if (_movementDestination.X > game.windowHeight - 1 || _movementDestination.X < 0)
             {
                 return false;
@@ -184,6 +189,8 @@ namespace mineGame
             {
                 return false;
             }
+
+
             return true;
         }
 
@@ -260,11 +267,16 @@ namespace mineGame
             {
                 if (game.GM.rocks[i].pos == _position + new Vector2(0, game.tileSize) && _dir == 'R') //check rocks at the right
                 {
+                    
                     game.GM.rocks[i].updatePosition(game.GM.rocks[i].pos + new Vector2(0, game.tileSize),game);
+                    //_movementDestination = new Vector2(_position.X, _position.Y + 32);
+                    
                 }
                 else if (game.GM.rocks[i].pos == _position - new Vector2(0, game.tileSize) && _dir == 'L') //check rocks at the left
                 {
+                    
                     game.GM.rocks[i].updatePosition(game.GM.rocks[i].pos - new Vector2(0, game.tileSize),game);
+                    //_movementDestination = new Vector2(_position.X, _position.Y - 32);
                 }
             }
         }
