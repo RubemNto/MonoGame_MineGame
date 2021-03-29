@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 using System;
+using System.Threading;
 
 namespace mineGame
 {
@@ -175,9 +176,99 @@ namespace mineGame
                     return false;
                 }
             }
+
+            for (int i = 0; i < game.GM.rocks.Count; i++)
+            {
+                Vector2[] positions = {
+                new Vector2(game.GM.rocks[i].pos.X,game.GM.rocks[i].pos.Y+game.tileSize),
+                new Vector2(game.GM.rocks[i].pos.X,game.GM.rocks[i].pos.Y-game.tileSize),
+                };
+                if (NextTo(game.GM.rocks[i].pos))
+                {
+                    //if (_dir == 'R')
+                    //{
+                    if (!game.GM.rocks[i].freeTile(game, positions[0]))
+                    {
+                        return false;
+                    }
+                    //}
+                    //else if (_dir == 'L')
+                    //{
+                    if (!game.GM.rocks[i].freeTile(game, positions[1]))
+                    {
+                        return false;
+                    }
+                    //}
+                }
+            }
             return true;
         }
 
+        public bool NextTo(Vector2 Destination)
+        {
+            Vector2[] positions = {
+                new Vector2(_movementDestination.X,_movementDestination.Y+game.tileSize),
+                new Vector2(_movementDestination.X,_movementDestination.Y-game.tileSize),
+                };
+            //Console.WriteLine(positions[0]);
+            //Console.WriteLine(positions[1]);
+            //Console.WriteLine(Destination);
+
+            //Thread.Sleep(2000);
+            //Console.Clear();
+
+            foreach (Rock rock in game.GM.rocks)
+            {
+                if (rock.pos == Destination)
+                {
+                    if ((Destination - new Vector2(Destination.X, Destination.Y + game.tileSize) == positions[0]) || (Destination + new Vector2(Destination.X, Destination.Y + game.tileSize) == positions[1]))
+                    {
+                        return true;
+                    }
+                }
+            }
+            foreach (Sand sand in game.GM.sands)
+            {
+                if (sand.pos == Destination)
+                {
+                    if ((Destination - new Vector2(Destination.X, Destination.Y + game.tileSize) == positions[0]) || (Destination + new Vector2(Destination.X, Destination.Y + game.tileSize) == positions[1]))
+                    {
+                        return true;
+                    }
+                }
+            }
+            foreach (wall Wall in game.GM.walls)
+            {
+                if (Wall.pos == Destination)
+                {
+                    if ((Destination - new Vector2(Destination.X, Destination.Y + game.tileSize) == positions[0]) || (Destination + new Vector2(Destination.X, Destination.Y + game.tileSize) == positions[1]))
+                    {
+                        return true;
+                    }
+                }
+            }
+            foreach (Bomb bomb in game.GM.bombs)
+            {
+                if (bomb.pos == Destination)
+                {
+                    if ((Destination - new Vector2(Destination.X, Destination.Y + game.tileSize) == positions[0]) || (Destination + new Vector2(Destination.X, Destination.Y + game.tileSize) == positions[1]))
+                    {
+                        return true;
+                    }
+                }
+            }
+            foreach (Diamond diamond in game.GM.diamonds)
+            {
+                if (diamond.pos == Destination)
+                {
+                    if ((Destination - new Vector2(Destination.X, Destination.Y + game.tileSize) == positions[0]) || (Destination + new Vector2(Destination.X, Destination.Y + game.tileSize) == positions[1]))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
 
         public void checkRocks()
         {
@@ -186,13 +277,11 @@ namespace mineGame
             {
                 if (game.GM.rocks[i].pos == _position + new Vector2(0, game.tileSize) && _dir == 'R') //check rocks at the right
                 {
-                    //if(game.GM.rocks[i].freeSideWays(game) == _position + new Vector2(0, 2*game.tileSize))
-                        game.GM.rocks[i].updatePosition(game.GM.rocks[i].pos + new Vector2(0, game.tileSize),game);
+                    game.GM.rocks[i].updatePosition(game.GM.rocks[i].pos + new Vector2(0, game.tileSize),game);
                 }
                 else if (game.GM.rocks[i].pos == _position - new Vector2(0, game.tileSize) && _dir == 'L') //check rocks at the left
                 {
-                    //if (game.GM.rocks[i].freeSideWays(game) == _position - new Vector2(0, 2 * game.tileSize))
-                        game.GM.rocks[i].updatePosition(game.GM.rocks[i].pos - new Vector2(0, game.tileSize),game);
+                    game.GM.rocks[i].updatePosition(game.GM.rocks[i].pos - new Vector2(0, game.tileSize),game);
                 }
             }
         }
