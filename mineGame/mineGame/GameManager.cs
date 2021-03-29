@@ -51,6 +51,7 @@ namespace mineGame
 
         public void SaveObjects(char[,] level)
         {
+            int portalsIndex = 0;
             for (int l = 0; l < level.GetLength(0); l++)
             {
                 for (int c = 0; c < level.GetLength(1); c++)
@@ -100,7 +101,9 @@ namespace mineGame
                     }
                     else if (level[l, c] == 'x')
                     {
-                        portals.Add(new Portal(game, new Vector2(l * game.tileSize, c * game.tileSize)));
+                        portals.Add(new Portal(game, new Vector2(l * game.tileSize, c * game.tileSize),portalsIndex));
+                        portalsIndex++;
+                        Console.WriteLine(portalsIndex);
                     }
                     else if (level[l, c] == ' ')
                     {
