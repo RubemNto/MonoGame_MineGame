@@ -7,11 +7,13 @@ namespace mineGame
     {
         public Texture2D texture;
         public Vector2 pos;
+        int index;
 
-        public Portal(Game1 g, Vector2 position)
+        public Portal(Game1 g, Vector2 position,int portalIndex)
         {
             texture = g.Content.Load<Texture2D>("portal");
             pos = position;
+            index = portalIndex;
         }
 
         public void LoadContent()
