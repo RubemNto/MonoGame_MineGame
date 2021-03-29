@@ -176,30 +176,13 @@ namespace mineGame
                     return false;
                 }
             }
-
-            for (int i = 0; i < game.GM.rocks.Count; i++)
+            if (_movementDestination.X > game.windowHeight - 1 || _movementDestination.X < 0)
             {
-                Vector2[] positions = {
-                new Vector2(game.GM.rocks[i].pos.X,game.GM.rocks[i].pos.Y+game.tileSize),
-                new Vector2(game.GM.rocks[i].pos.X,game.GM.rocks[i].pos.Y-game.tileSize),
-                };
-                if (NextTo(game.GM.rocks[i].pos))
-                {
-                    //if (_dir == 'R')
-                    //{
-                    if (!game.GM.rocks[i].freeTile(game, positions[0]))
-                    {
-                        return false;
-                    }
-                    //}
-                    //else if (_dir == 'L')
-                    //{
-                    if (!game.GM.rocks[i].freeTile(game, positions[1]))
-                    {
-                        return false;
-                    }
-                    //}
-                }
+                return false;
+            }
+            if (_movementDestination.Y > game.windowWidth - 1 || _movementDestination.Y < 0)
+            {
+                return false;
             }
             return true;
         }

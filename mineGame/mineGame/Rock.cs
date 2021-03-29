@@ -17,14 +17,14 @@ namespace mineGame
             texture = g.Content.Load<Texture2D>("rock");
             pos = position;
             destination = position;
-            rockSpeed = g.tileSize * 8;
+            rockSpeed = g.tileSize * 10;
             _checkBottom = true;
         }
 
         public void update(GameTime gameTime, Game1 game)
         {
             //surroundings(game);
-            if (moveTo(ref pos, destination, rockSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds))
+            if (moveTo(game , ref pos, destination, rockSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds))
             {
                 checkBottom(game);
             }
@@ -108,22 +108,11 @@ namespace mineGame
                 }
             }
             destination = bottomPos;
-            //foreach (Brick brick in game.GM.bricks)
-            //{
-            //    if (brick.pos == bottomPos)
-            //    {
-            //        //stop there
-            //    }
-            //}
-            //check if bottom pos is free
-            //if it is
-            //destination = free tile bellow
-            //else if it isn't
-            //destination = destination
         }
 
-        bool moveTo(ref Vector2 originalPos, Vector2 destination, float Speed)
+        bool moveTo(Game1 g ,ref Vector2 originalPos, Vector2 destination, float Speed)
         {
+
             if (originalPos != destination)
             {
                 //Console.WriteLine($"moving from " + originalPos + " to " + destination);
