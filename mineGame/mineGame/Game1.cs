@@ -20,6 +20,9 @@ namespace mineGame
         public int tileSize = 32;
         public bool pressingDown = false;
 
+        public int windowHeight;
+        public int windowWidth;
+
         Song backgroundMusic;
         
 
@@ -36,8 +39,8 @@ namespace mineGame
             GM = new GameManager(this,0);
             GM.loadLevel("level2.txt", out level);
 
-            int windowHeight = level.GetLength(0) * tileSize;
-            int windowWidth = tileSize * level.GetLength(1);
+            windowHeight = level.GetLength(0) * tileSize;
+            windowWidth = tileSize * level.GetLength(1);
             _graphics.PreferredBackBufferWidth = windowWidth;
             _graphics.PreferredBackBufferHeight = windowHeight;
             _graphics.ApplyChanges();
