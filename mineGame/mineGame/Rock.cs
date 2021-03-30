@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Threading;
 
 namespace mineGame
 {
@@ -24,17 +25,17 @@ namespace mineGame
         public void update(GameTime gameTime, Game1 game)
         {
             //surroundings(game);
-            if (moveTo(game , ref pos, destination, rockSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds))
+            if (moveTo(game, ref pos, destination, rockSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds))
             {
                 checkBottom(game);
             }
         }
 
-        public void updatePosition(Vector2 Destination,Game1 game)
+        public void updatePosition(Vector2 Destination, Game1 game)
         {
-            if(freeTile(game,Destination)) destination = Destination;
+            if (freeTile(game, Destination)) destination = Destination;
         }
-        public bool freeTile(Game1 game,Vector2 Destination)
+        public bool freeTile(Game1 game, Vector2 Destination)
         {
             foreach (Rock rock in game.GM.rocks)
             {
@@ -62,6 +63,16 @@ namespace mineGame
         private void checkBottom(Game1 game)
         {
             Vector2 bottomPos = pos + new Vector2(game.tileSize, 0);
+
+            //Kill player verification
+
+            if (game.GM.player._movementDestination == pos)
+            {
+                destination = game.GM.player._position;
+                game.GM.player.deadPlayer(game);
+                
+            }
+
             foreach (Rock rock in game.GM.rocks)
             {
                 if (rock.pos == bottomPos)
@@ -110,7 +121,7 @@ namespace mineGame
             destination = bottomPos;
         }
 
-        bool moveTo(Game1 g ,ref Vector2 originalPos, Vector2 destination, float Speed)
+        bool moveTo(Game1 g, ref Vector2 originalPos, Vector2 destination, float Speed)
         {
 
             if (originalPos != destination)
@@ -123,13 +134,7 @@ namespace mineGame
                     originalPos = destination;
                     //Console.WriteLine("moving {0} from {1} to {2}", "player", originalPos, destination);
                 }
-                else if (originalPos.X > destination.X && diference.X > 0)
-                {
-                    originalPos = destination;
-                    //Console.WriteLine("moving {0} from {1} to {2}","player",originalPos,destination);
-                }
-
-                if (originalPos.Y < destination.Y && diference.Y < 0)
+                else if (originalPos.Y < destination.Y && diference.Y < 0)
                 {
                     originalPos = destination;
                     //Console.WriteLine("moving {0} from {1} to {2}","player",originalPos,destination);
@@ -141,11 +146,10 @@ namespace mineGame
                 }
                 return false;
             }
-            else 
+            else
             {
                 return true;
             }
         }
-
     }
 }

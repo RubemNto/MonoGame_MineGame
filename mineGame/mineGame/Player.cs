@@ -12,6 +12,7 @@ namespace mineGame
         //private Point _position;
         private Game1 game;
         private bool _keysReleased = true;
+        private bool dead = false;
         bool moved = false;
         private char[] _direction = {
             'L','U','D', 'R'
@@ -21,8 +22,10 @@ namespace mineGame
 
         public Texture2D texture;
         public Vector2 _position;
-        private Vector2 _movementDestination;
+        private Vector2 initialPos;
+        public Vector2 _movementDestination;
         public float speed;
+        public float deadTimer = 2;
 
         public bool faceRight = true;
         SoundEffect moveSound;
@@ -39,14 +42,22 @@ namespace mineGame
 
             texture = g.Content.Load<Texture2D>("player");
             _position = position;
+            initialPos = position;
             _movementDestination = _position;
         }
 
 
-        public void update(GameTime gameTime,ref bool pressingDown) 
+        public void update(Game1 game, GameTime gameTime,ref bool pressingDown) 
         {
-            checkOrientation(ref pressingDown);
-            moveTo(ref _position,_movementDestination, speed * (float)gameTime.ElapsedGameTime.TotalSeconds);
+            if(dead == false) { 
+                checkOrientation(ref pressingDown);
+                moveTo(ref _position,_movementDestination, speed * (float)gameTime.ElapsedGameTime.TotalSeconds);
+            }
+            else
+            {
+                resetPos(game, gameTime, ref deadTimer); 
+                
+            }
         }
 
         void moveTo(ref Vector2 originalPos,Vector2 destination,float Speed) 
@@ -176,7 +187,7 @@ namespace mineGame
             }
             for (int i = 0; i < game.GM.rocks.Count; i++)
             {
-                if (game.GM.rocks[i].pos == _movementDestination && (game.GM.rocks[i].freeTile(game, new Vector2(0, 32)) || game.GM.rocks[i].freeTile(game, new Vector2(0, -32))));
+                if (game.GM.rocks[i].pos == _movementDestination)
                 {
                     return false;
                 }
@@ -279,6 +290,45 @@ namespace mineGame
                     //_movementDestination = new Vector2(_position.X, _position.Y - 32);
                 }
             }
+        }
+        public void deadPlayer(Game1 g)
+        {
+            Texture2D tempTexture = g.Content.Load<Texture2D>("playerDead");
+
+            // código para -1 vida, verificar se vidas são maiores ou = a zero
+
+            //Apresentar o "Game Over" caso vidas = 0
+
+            //Function to kill the player
+
+
+
+            dead = true;
+            texture = tempTexture;            
+           
+
+        }
+        
+        public void resetPos(Game g, GameTime gameTime, ref float _deadTimer)
+        {
+            float time = 2;
+
+            if (_deadTimer <= 0)
+            {
+                texture = g.Content.Load<Texture2D>("player");
+                _movementDestination = initialPos;
+                _position = initialPos;
+                _deadTimer = time;
+                dead = false;
+            }
+            else
+            {
+                _deadTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+
+            
+
+
         }
 
     }

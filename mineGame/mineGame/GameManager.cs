@@ -40,7 +40,7 @@ namespace mineGame
 
         public void UpdateGame(Game1 game,GameTime gameTime,ref bool Input)
         {
-            player.update(gameTime,ref Input);
+            player.update(game, gameTime,ref Input);
             foreach (Rock rock in rocks)
             {
                 rock.update(gameTime,game);
