@@ -23,7 +23,6 @@ namespace mineGame
         public Vector2 _position;
         private Vector2 _movementDestination;
         public float speed;
-
         public bool faceRight = true;
         SoundEffect moveSound;
         SoundEffect sandDestructionSound;
@@ -117,16 +116,18 @@ namespace mineGame
                     faceRight = true;
                     _movementDestination.Y += game.tileSize;
                     pressingKeyDown = true;
-                } 
-                if(pressingKeyDown)
-                checkRocks();
+                }
+
+
+                if (pressingKeyDown)
+                    checkRocks();
 
                 ////check collision with walls
                 if (freeSpace() == false && pressingKeyDown == true)
                 {
                     _movementDestination = pastPosition;
                     moved = false;
-                }
+                }               
 
                 //play sound when move
                 if (_movementDestination != pastPosition && pressingKeyDown == true) 
@@ -176,10 +177,10 @@ namespace mineGame
             }
             for (int i = 0; i < game.GM.rocks.Count; i++)
             {
-                if (game.GM.rocks[i].pos == _movementDestination && (game.GM.rocks[i].freeTile(game, new Vector2(0, 32)) || game.GM.rocks[i].freeTile(game, new Vector2(0, -32))));
-                {
-                    return false;
-                }
+                    if (game.GM.rocks[i].pos == _movementDestination)
+                    {
+                        return false;
+                    } 
             }
             if (_movementDestination.X > game.windowHeight - 1 || _movementDestination.X < 0)
             {
@@ -194,87 +195,19 @@ namespace mineGame
             return true;
         }
 
-        public bool NextTo(Vector2 Destination)
-        {
-            Vector2[] positions = {
-                new Vector2(_movementDestination.X,_movementDestination.Y+game.tileSize),
-                new Vector2(_movementDestination.X,_movementDestination.Y-game.tileSize),
-                };
-            //Console.WriteLine(positions[0]);
-            //Console.WriteLine(positions[1]);
-            //Console.WriteLine(Destination);
-
-            //Thread.Sleep(2000);
-            //Console.Clear();
-
-            foreach (Rock rock in game.GM.rocks)
-            {
-                if (rock.pos == Destination)
-                {
-                    if ((Destination - new Vector2(Destination.X, Destination.Y + game.tileSize) == positions[0]) || (Destination + new Vector2(Destination.X, Destination.Y + game.tileSize) == positions[1]))
-                    {
-                        return true;
-                    }
-                }
-            }
-            foreach (Sand sand in game.GM.sands)
-            {
-                if (sand.pos == Destination)
-                {
-                    if ((Destination - new Vector2(Destination.X, Destination.Y + game.tileSize) == positions[0]) || (Destination + new Vector2(Destination.X, Destination.Y + game.tileSize) == positions[1]))
-                    {
-                        return true;
-                    }
-                }
-            }
-            foreach (wall Wall in game.GM.walls)
-            {
-                if (Wall.pos == Destination)
-                {
-                    if ((Destination - new Vector2(Destination.X, Destination.Y + game.tileSize) == positions[0]) || (Destination + new Vector2(Destination.X, Destination.Y + game.tileSize) == positions[1]))
-                    {
-                        return true;
-                    }
-                }
-            }
-            foreach (Bomb bomb in game.GM.bombs)
-            {
-                if (bomb.pos == Destination)
-                {
-                    if ((Destination - new Vector2(Destination.X, Destination.Y + game.tileSize) == positions[0]) || (Destination + new Vector2(Destination.X, Destination.Y + game.tileSize) == positions[1]))
-                    {
-                        return true;
-                    }
-                }
-            }
-            foreach (Diamond diamond in game.GM.diamonds)
-            {
-                if (diamond.pos == Destination)
-                {
-                    if ((Destination - new Vector2(Destination.X, Destination.Y + game.tileSize) == positions[0]) || (Destination + new Vector2(Destination.X, Destination.Y + game.tileSize) == positions[1]))
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
         public void checkRocks()
-        {
+        {            
             //get all rocks in list
             for (int i = 0; i < game.GM.rocks.Count; i++)
             {
                 if (game.GM.rocks[i].pos == _position + new Vector2(0, game.tileSize) && _dir == 'R') //check rocks at the right
-                {
-                    
+                {                    
                     game.GM.rocks[i].updatePosition(game.GM.rocks[i].pos + new Vector2(0, game.tileSize),game);
                     //_movementDestination = new Vector2(_position.X, _position.Y + 32);
                     
                 }
                 else if (game.GM.rocks[i].pos == _position - new Vector2(0, game.tileSize) && _dir == 'L') //check rocks at the left
-                {
-                    
+                {                    
                     game.GM.rocks[i].updatePosition(game.GM.rocks[i].pos - new Vector2(0, game.tileSize),game);
                     //_movementDestination = new Vector2(_position.X, _position.Y - 32);
                 }
