@@ -62,7 +62,7 @@ namespace mineGame
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             this.backgroundMusic = Content.Load<Song>("Lazy Afternoon - Pushmo World Soundtrack");
 
-            MediaPlayer.Volume = 1f;
+            MediaPlayer.Volume = 0.5f;
             //MediaPlayer.
             //MediaPlayer.
             //  Uncomment the following line will also loop the song
@@ -155,10 +155,7 @@ namespace mineGame
                         case 'b':
                             for (int c = 0; c < GM.bombs.Count; c++)
                             {
-                                if (GM.bombs[c].pos == new Vector2(position.X, position.Y))
-                                {
-                                    _spriteBatch.Draw(GM.bombs[c].texture, new Rectangle((int)GM.bombs[c].pos.Y, (int)GM.bombs[c].pos.X, tileSize, tileSize), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
-                                }
+                                _spriteBatch.Draw(GM.bombs[c].texture, new Rectangle((int)GM.bombs[c].pos.Y, (int)GM.bombs[c].pos.X, tileSize, tileSize), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0);   
                             }
                             break;
                         case 'd':

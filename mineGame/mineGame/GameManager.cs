@@ -45,6 +45,10 @@ namespace mineGame
             {
                 rock.update(gameTime,game);
             }
+            foreach (Bomb bomb in bombs)
+            {
+                bomb.update(gameTime, game);
+            }
         }
         //public List<wall> walls = new List<wall>();
 

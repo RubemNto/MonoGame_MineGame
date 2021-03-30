@@ -128,9 +128,13 @@ namespace mineGame
                     faceRight = true;
                     _movementDestination.Y += game.tileSize;
                     pressingKeyDown = true;
-                } 
-                if(pressingKeyDown)
-                checkRocks();
+                }
+                if (pressingKeyDown)
+                {
+                    checkRocks();
+                    checkBomb();
+                }
+                
 
                 ////check collision with walls
                 if (freeSpace() == false && pressingKeyDown == true)
@@ -188,6 +192,13 @@ namespace mineGame
             for (int i = 0; i < game.GM.rocks.Count; i++)
             {
                 if (game.GM.rocks[i].pos == _movementDestination)
+                {
+                    return false;
+                }
+            }
+            for (int i = 0; i < game.GM.bombs.Count; i++)
+            {
+                if (game.GM.bombs[i].pos == _movementDestination)
                 {
                     return false;
                 }
@@ -291,6 +302,36 @@ namespace mineGame
                 }
             }
         }
+
+        public void checkBomb()
+        {
+            //get all bombs in list
+            for (int i = 0; i < game.GM.bombs.Count; i++)
+            {
+                if (game.GM.bombs[i].pos == _position + new Vector2(0, game.tileSize) && _dir == 'R') //check rocks at the right
+                {
+
+                    game.GM.bombs[i].updatePosition(game.GM.bombs[i].pos + new Vector2(0, 64), game);
+                    //_movementDestination = new Vector2(_position.X, _position.Y + 32);
+
+                }
+                else if (game.GM.bombs[i].pos == _position - new Vector2(0, game.tileSize) && _dir == 'L') //check rocks at the left
+                {
+
+                    game.GM.bombs[i].updatePosition(game.GM.bombs[i].pos - new Vector2(0, 64), game);
+                    //_movementDestination = new Vector2(_position.X, _position.Y - 32);
+                }
+                else if (game.GM.bombs[i].pos == _position + new Vector2(game.tileSize, 0) && _dir == 'D')
+                {
+                    game.GM.bombs[i].updatePosition(game.GM.bombs[i].pos + new Vector2(32, 0), game);
+                }
+                else if (game.GM.bombs[i].pos == _position - new Vector2(game.tileSize, 0) && _dir == 'U')
+                {
+                    game.GM.bombs[i].updatePosition(game.GM.bombs[i].pos - new Vector2(32, 0), game);
+                }
+            }
+        }
+
         public void deadPlayer(Game1 g)
         {
             Texture2D tempTexture = g.Content.Load<Texture2D>("playerDead");

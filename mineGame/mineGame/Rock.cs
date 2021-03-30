@@ -18,7 +18,7 @@ namespace mineGame
             texture = g.Content.Load<Texture2D>("rock");
             pos = position;
             destination = position;
-            rockSpeed = g.tileSize * 10;
+            rockSpeed = g.tileSize * 15;
             _checkBottom = true;
         }
 
