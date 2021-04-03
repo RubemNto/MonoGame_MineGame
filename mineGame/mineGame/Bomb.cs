@@ -124,6 +124,9 @@ namespace mineGame
             }
             else
             {
+                Console.WriteLine(game.GM.bombs.Count);
+                Console.WriteLine(game.GM.bombs.Remove(this));
+                Console.WriteLine(game.GM.bombs.Count);
                 // for (int i = 0; i < game.GM.bombs.Count; i++)
                 // {
                 //     if (game.GM.bombs[i].Equals(this))

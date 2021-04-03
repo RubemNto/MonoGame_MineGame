@@ -45,10 +45,16 @@ namespace mineGame
             {
                 rock.update(gameTime,game);
             }
-            foreach (Bomb bomb in bombs)
+
+            for (int i = 0; i < bombs.Count; i++)
             {
-                bomb.update(gameTime, game);
+                bombs[i].update(gameTime, game);
             }
+
+            //foreach (Bomb bomb in bombs)
+            //{
+            //    bomb.update(gameTime, game);
+            //}
         }
         //public List<wall> walls = new List<wall>();
 
@@ -105,13 +111,8 @@ namespace mineGame
                     }
                     else if (level[l, c] == 'x')
                     {
-                        portals.Add(new Portal(game, new Vector2(l * game.tileSize, c * game.tileSize),portalsIndex));
-                        portalsIndex++;
-                        Console.WriteLine(portalsIndex);
+                        portals.Add(new Portal(game, new Vector2(l * game.tileSize, c * game.tileSize)));
                     }
-                    //else if (level[l, c] == ' ')
-                    //{
-                    //}
                 }
             }
         }

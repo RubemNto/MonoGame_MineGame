@@ -11,9 +11,9 @@ namespace mineGame
     {
         //private Point _position;
         private Game1 game;
-        private bool _keysReleased = true;
+        private bool _useBomb = true;
         private bool dead = false;
-        private bool moved = false;
+        //private bool moved = false;
         public bool faceRight = true;
         private char[] _direction = {
             'L','U','D', 'R'
@@ -55,9 +55,14 @@ namespace mineGame
             if(dead == false) { 
                 checkOrientation(ref pressingDown, keyboardState);
                 moveTo(ref _position,_movementDestination, speed * (float)gameTime.ElapsedGameTime.TotalSeconds);
-                if (keyboardState.IsKeyDown(Keys.A) && numBombs > 0)
+                if (keyboardState.IsKeyDown(Keys.A) && numBombs > 0 && _useBomb == true)
                 {
+                    _useBomb = false;
                     useBomb();
+                }
+                else if (keyboardState.IsKeyUp(Keys.A))
+                {
+                    _useBomb = true;
                 }
             }
             else
@@ -145,7 +150,7 @@ namespace mineGame
                 if (freeSpace() == false && pressingKeyDown == true)
                 {
                     _movementDestination = pastPosition;
-                    moved = false;
+                    //moved = false;
                 }
 
                 //play sound when move
