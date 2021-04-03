@@ -155,7 +155,17 @@ namespace mineGame
                         case 'b':
                             for (int c = 0; c < GM.bombs.Count; c++)
                             {
-                                _spriteBatch.Draw(GM.bombs[c].texture, new Rectangle((int)GM.bombs[c].pos.Y, (int)GM.bombs[c].pos.X, tileSize, tileSize), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0);   
+                                if (GM.bombs[c].collectable)
+                                {
+                                    _spriteBatch.Draw(GM.bombs[c].texture,
+                                        new Rectangle((int) GM.bombs[c].pos.Y, (int) GM.bombs[c].pos.X, tileSize,
+                                            tileSize), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
+                                }
+                                else
+                                {
+                                    _spriteBatch.Draw(GM.bombs[c].texture,new Rectangle((int) GM.bombs[c].pos.Y - tileSize/2, (int) GM.bombs[c].pos.X - tileSize/2, tileSize*2,
+                                        tileSize*2), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
+                                }
                             }
                             break;
                         case 'd':
