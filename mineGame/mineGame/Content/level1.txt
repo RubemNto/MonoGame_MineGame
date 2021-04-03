@@ -7,7 +7,7 @@
 ###########rr####
 #h    bs#sssdsss#
 #ssr  ss#dsssssd#
-#ssrx   #sbrrr  #
+#ssrx   #sbr r  #
 #ssrrr  #ssrxr  #
 #sssss  #  rrr  #
 ####rrr##########

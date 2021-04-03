@@ -55,8 +55,7 @@ namespace mineGame
             }
             else
             {
-                resetPos(game, gameTime, ref deadTimer); 
-                
+                resetPos(game, gameTime, ref deadTimer);
             }
         }
 
@@ -169,6 +168,10 @@ namespace mineGame
                         collectionSound.Play(0.5f, 1f, 0f);
                     }
                 }
+
+                //check portals
+                checkPortals();
+
             }
             else
             {
@@ -216,70 +219,21 @@ namespace mineGame
             return true;
         }
 
-        public bool NextTo(Vector2 Destination)
+        public void checkPortals()
         {
-            Vector2[] positions = {
-                new Vector2(_movementDestination.X,_movementDestination.Y+game.tileSize),
-                new Vector2(_movementDestination.X,_movementDestination.Y-game.tileSize),
-                };
-            //Console.WriteLine(positions[0]);
-            //Console.WriteLine(positions[1]);
-            //Console.WriteLine(Destination);
-
-            //Thread.Sleep(2000);
-            //Console.Clear();
-
-            foreach (Rock rock in game.GM.rocks)
+            for (int i = 0; i < game.GM.portals.Count; i++)
             {
-                if (rock.pos == Destination)
+                if (game.GM.portals[i].pos == _position)
                 {
-                    if ((Destination - new Vector2(Destination.X, Destination.Y + game.tileSize) == positions[0]) || (Destination + new Vector2(Destination.X, Destination.Y + game.tileSize) == positions[1]))
-                    {
-                        return true;
-                    }
+                    //game.GM.portals.RemoveAt(i);
+                    _position = game.GM.portals[i+1].pos;
+                    _movementDestination = game.GM.portals[i+1].pos;
+                    //game.GM.portals = game.GM.copyPortals;
+                    game.GM.portals.RemoveAt(i);
+                    initialPos = game.GM.portals[i].pos;
+                    game.GM.portals.RemoveAt(i);
                 }
             }
-            foreach (Sand sand in game.GM.sands)
-            {
-                if (sand.pos == Destination)
-                {
-                    if ((Destination - new Vector2(Destination.X, Destination.Y + game.tileSize) == positions[0]) || (Destination + new Vector2(Destination.X, Destination.Y + game.tileSize) == positions[1]))
-                    {
-                        return true;
-                    }
-                }
-            }
-            foreach (wall Wall in game.GM.walls)
-            {
-                if (Wall.pos == Destination)
-                {
-                    if ((Destination - new Vector2(Destination.X, Destination.Y + game.tileSize) == positions[0]) || (Destination + new Vector2(Destination.X, Destination.Y + game.tileSize) == positions[1]))
-                    {
-                        return true;
-                    }
-                }
-            }
-            foreach (Bomb bomb in game.GM.bombs)
-            {
-                if (bomb.pos == Destination)
-                {
-                    if ((Destination - new Vector2(Destination.X, Destination.Y + game.tileSize) == positions[0]) || (Destination + new Vector2(Destination.X, Destination.Y + game.tileSize) == positions[1]))
-                    {
-                        return true;
-                    }
-                }
-            }
-            foreach (Diamond diamond in game.GM.diamonds)
-            {
-                if (diamond.pos == Destination)
-                {
-                    if ((Destination - new Vector2(Destination.X, Destination.Y + game.tileSize) == positions[0]) || (Destination + new Vector2(Destination.X, Destination.Y + game.tileSize) == positions[1]))
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
         }
 
         public void checkRocks()

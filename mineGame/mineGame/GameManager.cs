@@ -109,9 +109,9 @@ namespace mineGame
                         portalsIndex++;
                         Console.WriteLine(portalsIndex);
                     }
-                    else if (level[l, c] == ' ')
-                    {
-                    }
+                    //else if (level[l, c] == ' ')
+                    //{
+                    //}
                 }
             }
         }
