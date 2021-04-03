@@ -14,7 +14,8 @@ namespace mineGame
         public bool exploding = false; //???
         public bool collectable = true;
         public float aboutToExplode = 3;
-        public int drawScale;
+        public float animationTime = 0.5f;
+        public int drawScale = 1;
 
 
         public Bomb(Game1 g, Vector2 position)
@@ -46,39 +47,61 @@ namespace mineGame
             }
         }
 
-        public void updatePosition(Vector2 Destination, Game1 game)
-        {
-            if (freeTile(game, Destination)) destination = Destination;
-        }
+        // public void updatePosition(Vector2 Destination, Game1 game)
+        // {
+        //     if (freeTile(game, Destination)) destination = Destination;
+        // }
 
-        public bool freeTile(Game1 game, Vector2 Destination)
+        public void removeAt(Game1 game, Vector2 Destination)
         {
+            if(game.GM.player._position == Destination) game.GM.player.deadPlayer(game);
+            
             foreach (Rock rock in game.GM.rocks)
             {
-                if (rock.pos == Destination) return false;
+                if (rock.pos == Destination)
+                {
+                    game.GM.rocks.Remove(rock);
+                    return;
+                }
             }
 
             foreach (Sand sand in game.GM.sands)
             {
-                if (sand.pos == Destination) return false;
+                if (sand.pos == Destination)
+                {
+                    game.GM.sands.Remove(sand);
+                    return;
+                }
             }
 
             foreach (wall Wall in game.GM.walls)
             {
-                if (Wall.pos == Destination) return false;
+                if (Wall.pos == Destination)
+                {
+                    game.GM.walls.Remove(Wall);
+                    return;
+                }
             }
 
-            foreach (Bomb bomb in game.GM.bombs)
-            {
-                if (bomb.pos == Destination) return false;
-            }
+            // foreach (Bomb bomb in game.GM.bombs)
+            // {
+            //     if (bomb.pos == Destination)
+            //     {
+            //         bomb.explosion(game);
+            //         return;
+            //     }
+            // }
 
             foreach (Diamond diamond in game.GM.diamonds)
             {
-                if (diamond.pos == Destination) return false;
+                if (diamond.pos == Destination)
+                {
+                    game.GM.diamonds.Remove(diamond);
+                    return;
+                }
             }
-
-            return true;
+            
+            
         }
 
         bool moveTo(Game1 g, ref Vector2 originalPos, Vector2 destination, float Speed)
@@ -113,20 +136,37 @@ namespace mineGame
             }
         }
 
+        public bool wait(ref float timer, GameTime gameTime)
+        {
+            if (timer > 0)
+            {
+                timer -= (float) gameTime.ElapsedGameTime.TotalSeconds;
+                return false;
+            }
+
+            return true;
+        }
+        
         public void countDown(ref float timer, GameTime gameTime, Game1 game)
         {
             if (timer > 0)
             {
                 timer -= (float) gameTime.ElapsedGameTime.TotalSeconds;
-                if (drawScale == 1) drawScale = 2;
-                else drawScale = 1;
-                Console.WriteLine(timer);
+                if (wait(ref animationTime, gameTime) && drawScale == 1)
+                {
+                    animationTime = 0.5f;
+                    drawScale = 2;
+                }
+                else if(wait(ref animationTime, gameTime) && drawScale == 2)
+                {
+                    animationTime = 0.5f;
+                    drawScale = 1;
+                }
             }
             else
             {
-                Console.WriteLine(game.GM.bombs.Count);
-                Console.WriteLine(game.GM.bombs.Remove(this));
-                Console.WriteLine(game.GM.bombs.Count);
+                explosion(game);
+                game.GM.bombs.Remove(this);
                 // for (int i = 0; i < game.GM.bombs.Count; i++)
                 // {
                 //     if (game.GM.bombs[i].Equals(this))
@@ -136,6 +176,26 @@ namespace mineGame
                 //     }
                 // }
             }
+        }
+
+        public void explosion(Game1 game)
+        {
+            // canto superior esquerdo
+            removeAt(game, pos + Vector2.One*game.tileSize);
+            // esquerda
+            removeAt(game, pos + new Vector2(game.tileSize,0));
+            // canto inferior esquerdo
+            removeAt(game, pos + new Vector2(game.tileSize,-game.tileSize));
+            // canto superior esquerdo
+            removeAt(game, pos - Vector2.One*game.tileSize);
+            // esquerda
+            removeAt(game, pos - new Vector2(game.tileSize,0));
+            // canto inferior esquerdo
+            removeAt(game, pos - new Vector2(game.tileSize,-game.tileSize));
+            removeAt(game, pos - new Vector2(0,game.tileSize));
+            removeAt(game, pos - new Vector2(0,-game.tileSize));
+            removeAt(game,pos);
+            
         }
     }
 }

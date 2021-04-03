@@ -155,7 +155,7 @@ namespace mineGame
                         case 'b':
                             for (int c = 0; c < GM.bombs.Count; c++)
                             {
-                                if (GM.bombs[c].collectable)
+                                if (GM.bombs[c].collectable || GM.bombs[c].drawScale == 1)
                                 {
                                     _spriteBatch.Draw(GM.bombs[c].texture,
                                         new Rectangle((int) GM.bombs[c].pos.Y, (int) GM.bombs[c].pos.X, tileSize,
@@ -163,8 +163,8 @@ namespace mineGame
                                 }
                                 else
                                 {
-                                    _spriteBatch.Draw(GM.bombs[c].texture,new Rectangle((int) GM.bombs[c].pos.Y - tileSize/2, (int) GM.bombs[c].pos.X - tileSize/2, tileSize*2,
-                                        tileSize*2), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
+                                    _spriteBatch.Draw(GM.bombs[c].texture,new Rectangle((int) GM.bombs[c].pos.Y - tileSize/GM.bombs[c].drawScale, (int) GM.bombs[c].pos.X - tileSize/GM.bombs[c].drawScale, tileSize*GM.bombs[c].drawScale,
+                                        tileSize*GM.bombs[c].drawScale), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
                                 }
                             }
                             break;
