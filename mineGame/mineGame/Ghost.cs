@@ -6,10 +6,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace mineGame
 {
-    class Ghost
+    public class Ghost
     {
 
-        //___________________ ""Artificial Inteligence""_______________________________//  
+        //___________________ """Artificial Inteligence"""_______________________________//  
 
         /*
                 - Prioriza a posição Y (horizontal) e depois a posição X (vertical)
@@ -24,11 +24,18 @@ namespace mineGame
                                                                                                                                          */
         public Texture2D texture;
         public Vector2 pos;
+        public Vector2 destination;
+        public Vector2 originalPos;
+        public float ghostSpeed;
+
 
         public Ghost (Game1 g, Vector2 position)
         {
-            texture = g.Content.Load<Texture2D>("sand");
+            texture = g.Content.Load<Texture2D>("ghost");
             pos = position;
+            originalPos = position;
+            destination = position;
+            ghostSpeed = g.tileSize * 0;
         }
 
 
@@ -36,12 +43,56 @@ namespace mineGame
         {
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(Game1 game ,GameTime gameTime)
         {
+            if (!game.GM.player.dead)
+            {
+                destination = game.GM.player._position;
+                moveTo(ref pos, destination, ghostSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds);
+
+                if (pos == destination)
+                {
+                    game.GM.player.deadPlayer(game);
+                    pos = originalPos;
+                }
+
+            }
         }
 
         public void Draw(SpriteBatch sb)
         {
+        }
+
+        void moveTo(ref Vector2 originalPos, Vector2 destination, float Speed)
+        {
+            if (originalPos != destination)
+            {
+                //Console.WriteLine($"moving from " + originalPos + " to " + destination);
+                Vector2 diference = destination - originalPos;
+                originalPos += Vector2.Normalize(diference) * Speed;
+                if (originalPos.X < destination.X && diference.X < 0)
+                {
+                    originalPos = destination;
+                    //Console.WriteLine("moving {0} from {1} to {2}", "player", originalPos, destination);
+                }
+                else if (originalPos.X > destination.X && diference.X > 0)
+                {
+                    originalPos = destination;
+                    //Console.WriteLine("moving {0} from {1} to {2}","player",originalPos,destination);
+                }
+
+                if (originalPos.Y < destination.Y && diference.Y < 0)
+                {
+                    originalPos = destination;
+                    //Console.WriteLine("moving {0} from {1} to {2}","player",originalPos,destination);
+                }
+                else if (originalPos.Y > destination.Y && diference.Y > 0)
+                {
+                    originalPos = destination;
+                    //Console.WriteLine("moving {0} from {1} to {2}","player",originalPos,destination);
+                }
+            }
+
         }
     }
 }

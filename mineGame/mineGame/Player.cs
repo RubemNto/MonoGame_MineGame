@@ -12,7 +12,7 @@ namespace mineGame
         //private Point _position;
         private Game1 game;
         private bool _useBomb = true;
-        private bool dead = false;
+        public bool dead = false;
         //private bool moved = false;
         public bool faceRight = true;
         private char[] _direction = {
@@ -105,9 +105,11 @@ namespace mineGame
 
         void checkOrientation(ref bool pressingKeyDown, KeyboardState keyboardState)
         {
+            
             //_movementDestination = _position;
             if (!pressingKeyDown)
             {
+
                 Vector2 pastPosition = _position;
                 if (keyboardState.IsKeyDown(Keys.Up))
                 {
@@ -186,6 +188,10 @@ namespace mineGame
             }
             else
             {
+                foreach (Ghost ghost in game.GM.ghosts)
+                {
+                    ghost.ghostSpeed = game.tileSize * 3;
+                }
                 if (keyboardState.IsKeyUp(Keys.Up) && keyboardState.IsKeyUp(Keys.Down) && keyboardState.IsKeyUp(Keys.Left) && keyboardState.IsKeyUp(Keys.Right) && _position == _movementDestination)
                 {
                     pressingKeyDown = false;

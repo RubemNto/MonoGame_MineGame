@@ -19,6 +19,7 @@ namespace mineGame
         public List<Bomb> bombs = new List<Bomb>();
         public List<Diamond> diamonds = new List<Diamond>();
         public List<Rock> rocks = new List<Rock>();
+        public List<Ghost> ghosts = new List<Ghost>();
 
         private int points = 0;
 
@@ -50,6 +51,12 @@ namespace mineGame
             {
                 bombs[i].update(gameTime, game);
             }
+
+            for (int i = 0; i < ghosts.Count; i++)
+            {
+                ghosts[i].Update(game, gameTime);
+            }
+
 
             //foreach (Bomb bomb in bombs)
             //{
@@ -103,11 +110,9 @@ namespace mineGame
                         rocks.Add(new Rock(game, new Vector2(l * game.tileSize, c * game.tileSize)));
                         //bricks.Add(new Brick(game, new Vector2(l * game.tileSize, c * game.tileSize)));
                     }
-                    else if (level[l, c] == 'v')
+                    else if (level[l, c] == 'g')
                     {
-                    }
-                    else if (level[l, c] == 'h')
-                    {
+                        ghosts.Add(new Ghost(game, new Vector2(l * game.tileSize, c * game.tileSize)));
                     }
                     else if (level[l, c] >= '1' && level[l,c] <= '9')//check which instance of portal must be added
                     {

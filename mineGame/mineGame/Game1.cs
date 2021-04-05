@@ -67,7 +67,7 @@ namespace mineGame
             //MediaPlayer.
             //  Uncomment the following line will also loop the song
             MediaPlayer.IsRepeating = true;
-            MediaPlayer.Play(backgroundMusic);
+            //MediaPlayer.Play(backgroundMusic);
             //MediaPlayer.MediaStateChanged += MediaPlayer_MediaStateChanged;
 
             // TODO: use this.Content to load your game content here
@@ -175,6 +175,13 @@ namespace mineGame
                                 { 
                                     _spriteBatch.Draw(GM.diamonds[c].texture, new Rectangle((int)GM.diamonds[c].pos.Y, (int)GM.diamonds[c].pos.X, tileSize, tileSize), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
                                 }
+                            }
+                            break;
+                        case 'g':
+                            for (int c = 0; c < GM.ghosts.Count; c++)
+                            {
+                                
+                                _spriteBatch.Draw(GM.ghosts[c].texture, new Rectangle((int)GM.ghosts[c].pos.Y, (int)GM.ghosts[c].pos.X, tileSize, tileSize), null, Color.Green, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
                             }
                             break;
                     }
