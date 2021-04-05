@@ -21,6 +21,8 @@ namespace mineGame
 
         private char _dir;
 
+        public Rectangle hitbox = new Rectangle();
+
         public Texture2D texture;
         public Vector2 _position;
         private Vector2 initialPos;

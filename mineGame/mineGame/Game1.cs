@@ -137,9 +137,15 @@ namespace mineGame
                         //    break;
                         case 'p':
                             if (GM.player.faceRight == false)
+                            {
+                                GM.player.hitbox = new Rectangle((int)GM.player._position.Y, (int)GM.player._position.X, tileSize/8, tileSize/8);
                                 _spriteBatch.Draw(GM.player.texture, new Rectangle((int)GM.player._position.Y, (int)GM.player._position.X, tileSize, tileSize), null, Color.Red, 0f, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 1f);
+                            }
                             else
-                                _spriteBatch.Draw(GM.player.texture, new Rectangle((int)GM.player._position.Y, (int)GM.player._position.X, tileSize, tileSize), null, Color.Red, 0f, new Vector2(0, 0), SpriteEffects.None,1f);
+                            {
+                                GM.player.hitbox = new Rectangle((int)GM.player._position.Y, (int)GM.player._position.X, tileSize/8, tileSize/8);
+                                _spriteBatch.Draw(GM.player.texture, new Rectangle((int)GM.player._position.Y, (int)GM.player._position.X, tileSize, tileSize), null, Color.Red, 0f, new Vector2(0, 0), SpriteEffects.None, 1f);
+                            } 
                             break;
                         case 'r':
                             for (int c = 0; c < GM.rocks.Count; c++)
@@ -180,7 +186,7 @@ namespace mineGame
                         case 'g':
                             for (int c = 0; c < GM.ghosts.Count; c++)
                             {
-                                
+                                GM.ghosts[c].hitbox = new Rectangle((int)GM.ghosts[c].pos.Y, (int)GM.ghosts[c].pos.X, tileSize, tileSize);
                                 _spriteBatch.Draw(GM.ghosts[c].texture, new Rectangle((int)GM.ghosts[c].pos.Y, (int)GM.ghosts[c].pos.X, tileSize, tileSize), null, Color.Green, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
                             }
                             break;

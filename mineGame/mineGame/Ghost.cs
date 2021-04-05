@@ -28,6 +28,7 @@ namespace mineGame
         public Vector2 originalPos;
         public float ghostSpeed;
 
+        public Rectangle hitbox = new Rectangle();
 
         public Ghost (Game1 g, Vector2 position)
         {
@@ -50,11 +51,16 @@ namespace mineGame
                 destination = game.GM.player._position;
                 moveTo(ref pos, destination, ghostSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds);
 
-                if (pos == destination)
-                {
+                if(hitbox.Intersects(game.GM.player.hitbox))
+                {                    
                     game.GM.player.deadPlayer(game);
                     pos = originalPos;
                 }
+
+                //if (pos == destination)
+                //{
+                //    game.GM.player.deadPlayer(game);
+                //}
 
             }
         }

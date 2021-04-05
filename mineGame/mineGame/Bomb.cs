@@ -181,6 +181,7 @@ namespace mineGame
         public void explosion(Game1 game)
         {
             // canto superior esquerdo
+            //change explosion position to explosion tile
             removeAt(game, pos + Vector2.One*game.tileSize);
             // esquerda
             removeAt(game, pos + new Vector2(game.tileSize,0));
@@ -194,8 +195,7 @@ namespace mineGame
             removeAt(game, pos - new Vector2(game.tileSize,-game.tileSize));
             removeAt(game, pos - new Vector2(0,game.tileSize));
             removeAt(game, pos - new Vector2(0,-game.tileSize));
-            removeAt(game,pos);
-            
+            removeAt(game,pos);            
         }
     }
 }
