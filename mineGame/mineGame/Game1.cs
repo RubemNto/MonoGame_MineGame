@@ -37,7 +37,7 @@ namespace mineGame
         {
             // TODO: Add your initialization logic here
             GM = new GameManager(this,0);
-            GM.loadLevel("level1.txt", out level);
+            GM.loadLevel("level2.txt", out level);
 
             windowHeight = level.GetLength(0) * tileSize;
             windowWidth = tileSize * level.GetLength(1);
@@ -108,12 +108,21 @@ namespace mineGame
 
                     switch (level[i, b])
                     {
+                        case 't':
+                            for (int c = 0; c < GM.bricks.Count; c++)
+                            {
+                                if (GM.bricks[c].pos == new Vector2(position.X, position.Y))
+                                {
+                                    _spriteBatch.Draw(GM.bricks[c].texture, new Rectangle((int)GM.bricks[c].pos.Y, (int)GM.bricks[c].pos.X, tileSize, tileSize), null, Color.DarkRed, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
+                                }
+                            }
+                            break;
                         case '#':
                             for (int c = 0; c < GM.walls.Count; c++)
                             {
                                 if (GM.walls[c].pos == new Vector2(position.X,position.Y))
                                 {
-                                    _spriteBatch.Draw(GM.walls[c].texture, new Rectangle((int)GM.walls[c].pos.Y, (int)GM.walls[c].pos.X, tileSize, tileSize), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
+                                    _spriteBatch.Draw(GM.walls[c].texture, new Rectangle((int)GM.walls[c].pos.Y, (int)GM.walls[c].pos.X, tileSize, tileSize), null, Color.LightGray, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
                                 }
                             }
                             break;
@@ -122,7 +131,7 @@ namespace mineGame
                             {
                                 if (GM.sands[c].pos == new Vector2(position.X, position.Y))
                                 {
-                                    _spriteBatch.Draw(GM.sands[c].texture, new Rectangle((int)GM.sands[c].pos.Y, (int)GM.sands[c].pos.X, tileSize, tileSize), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
+                                    _spriteBatch.Draw(GM.sands[c].texture, new Rectangle((int)GM.sands[c].pos.Y, (int)GM.sands[c].pos.X, tileSize, tileSize), null, Color.SandyBrown, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
                                 }
                             }
                             break;
@@ -139,12 +148,12 @@ namespace mineGame
                             if (GM.player.faceRight == false)
                             {
                                 GM.player.hitbox = new Rectangle((int)GM.player._position.Y, (int)GM.player._position.X, tileSize/8, tileSize/8);
-                                _spriteBatch.Draw(GM.player.texture, new Rectangle((int)GM.player._position.Y, (int)GM.player._position.X, tileSize, tileSize), null, Color.Red, 0f, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 1f);
+                                _spriteBatch.Draw(GM.player.texture, new Rectangle((int)GM.player._position.Y, (int)GM.player._position.X, tileSize, tileSize), null, Color.Violet, 0f, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 1f);
                             }
                             else
                             {
                                 GM.player.hitbox = new Rectangle((int)GM.player._position.Y, (int)GM.player._position.X, tileSize/8, tileSize/8);
-                                _spriteBatch.Draw(GM.player.texture, new Rectangle((int)GM.player._position.Y, (int)GM.player._position.X, tileSize, tileSize), null, Color.Red, 0f, new Vector2(0, 0), SpriteEffects.None, 1f);
+                                _spriteBatch.Draw(GM.player.texture, new Rectangle((int)GM.player._position.Y, (int)GM.player._position.X, tileSize, tileSize), null, Color.Violet, 0f, new Vector2(0, 0), SpriteEffects.None, 1f);
                             } 
                             break;
                         case 'r':
@@ -154,7 +163,7 @@ namespace mineGame
                                 //{
                                     //Console.WriteLine("{0} -> {1}", GM.rocks[c].pos, position);
                                     //Console.WriteLine("DrawingRock");
-                                    _spriteBatch.Draw(GM.rocks[c].texture, new Rectangle((int)GM.rocks[c].pos.Y, (int)GM.rocks[c].pos.X, tileSize, tileSize), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 1f);
+                                    _spriteBatch.Draw(GM.rocks[c].texture, new Rectangle((int)GM.rocks[c].pos.Y, (int)GM.rocks[c].pos.X, tileSize, tileSize), null, Color.Brown, 0f, new Vector2(0, 0), SpriteEffects.None, 1f);
                                 //}
                             }
                             break;
@@ -165,12 +174,12 @@ namespace mineGame
                                 {
                                     _spriteBatch.Draw(GM.bombs[c].texture,
                                         new Rectangle((int) GM.bombs[c].pos.Y, (int) GM.bombs[c].pos.X, tileSize,
-                                            tileSize), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
+                                            tileSize), null, Color.Red, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
                                 }
                                 else
                                 {
                                     _spriteBatch.Draw(GM.bombs[c].texture,new Rectangle((int) GM.bombs[c].pos.Y - tileSize/GM.bombs[c].drawScale, (int) GM.bombs[c].pos.X - tileSize/GM.bombs[c].drawScale, tileSize*GM.bombs[c].drawScale,
-                                        tileSize*GM.bombs[c].drawScale), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
+                                        tileSize*GM.bombs[c].drawScale), null, Color.Orange, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
                                 }
                             }
                             break;
@@ -179,7 +188,7 @@ namespace mineGame
                             {
                                 if (GM.diamonds[c].pos == new Vector2(position.X, position.Y))
                                 { 
-                                    _spriteBatch.Draw(GM.diamonds[c].texture, new Rectangle((int)GM.diamonds[c].pos.Y, (int)GM.diamonds[c].pos.X, tileSize, tileSize), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
+                                    _spriteBatch.Draw(GM.diamonds[c].texture, new Rectangle((int)GM.diamonds[c].pos.Y, (int)GM.diamonds[c].pos.X, tileSize, tileSize), null, Color.Green, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
                                 }
                             }
                             break;
@@ -187,7 +196,7 @@ namespace mineGame
                             for (int c = 0; c < GM.ghosts.Count; c++)
                             {
                                 GM.ghosts[c].hitbox = new Rectangle((int)GM.ghosts[c].pos.Y, (int)GM.ghosts[c].pos.X, tileSize, tileSize);
-                                _spriteBatch.Draw(GM.ghosts[c].texture, new Rectangle((int)GM.ghosts[c].pos.Y, (int)GM.ghosts[c].pos.X, tileSize, tileSize), null, Color.Green, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
+                                _spriteBatch.Draw(GM.ghosts[c].texture, new Rectangle((int)GM.ghosts[c].pos.Y, (int)GM.ghosts[c].pos.X, tileSize, tileSize), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
                             }
                             break;
                     }

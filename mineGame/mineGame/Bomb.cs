@@ -16,6 +16,7 @@ namespace mineGame
         public float aboutToExplode = 3;
         public float animationTime = 0.5f;
         public int drawScale = 1;
+        public float explosionTime = 0.02f;
 
 
         public Bomb(Game1 g, Vector2 position)
@@ -149,6 +150,7 @@ namespace mineGame
         
         public void countDown(ref float timer, GameTime gameTime, Game1 game)
         {
+
             if (timer > 0)
             {
                 timer -= (float) gameTime.ElapsedGameTime.TotalSeconds;
@@ -166,7 +168,12 @@ namespace mineGame
             else
             {
                 explosion(game);
-                game.GM.bombs.Remove(this);
+                if(wait(ref explosionTime, gameTime))
+                {
+                    game.GM.bombs.Remove(this);
+                }
+                
+
                 // for (int i = 0; i < game.GM.bombs.Count; i++)
                 // {
                 //     if (game.GM.bombs[i].Equals(this))
@@ -180,6 +187,7 @@ namespace mineGame
 
         public void explosion(Game1 game)
         {
+            texture = game.Content.Load<Texture2D>("whitesquare"); 
             // canto superior esquerdo
             //change explosion position to explosion tile
             removeAt(game, pos + Vector2.One*game.tileSize);

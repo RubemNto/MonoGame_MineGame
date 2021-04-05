@@ -192,7 +192,7 @@ namespace mineGame
             {
                 foreach (Ghost ghost in game.GM.ghosts)
                 {
-                    ghost.ghostSpeed = game.tileSize * 3;
+                    ghost.ghostSpeed = game.tileSize *2;
                 }
                 if (keyboardState.IsKeyUp(Keys.Up) && keyboardState.IsKeyUp(Keys.Down) && keyboardState.IsKeyUp(Keys.Left) && keyboardState.IsKeyUp(Keys.Right) && _position == _movementDestination)
                 {
@@ -207,6 +207,13 @@ namespace mineGame
             for (int i = 0; i < game.GM.walls.Count; i++)
             {
                 if (game.GM.walls[i].pos == _movementDestination)
+                {
+                    return false;
+                }
+            }
+            for (int i = 0; i < game.GM.bricks.Count; i++)
+            {
+                if (game.GM.bricks[i].pos == _movementDestination)
                 {
                     return false;
                 }
@@ -342,14 +349,12 @@ namespace mineGame
         
         public void resetPos(Game g, GameTime gameTime, ref float _deadTimer)
         {
-            float time = 2;
 
             if (_deadTimer <= 0)
             {
                 texture = g.Content.Load<Texture2D>("player");
                 _movementDestination = initialPos;
                 _position = initialPos;
-                _deadTimer = time;
                 dead = false;
             }
             else

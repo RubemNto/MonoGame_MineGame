@@ -21,6 +21,8 @@ namespace mineGame
         public List<Rock> rocks = new List<Rock>();
         public List<Ghost> ghosts = new List<Ghost>();
 
+
+
         private int points = 0;
 
         public Player player;
@@ -85,6 +87,10 @@ namespace mineGame
                        x -> portal
                          -> nothing
                     */
+                    if (level[l, c] == 't')
+                    {
+                        bricks.Add(new Brick(game, new Vector2(l * game.tileSize, c * game.tileSize)));
+                    }
                     if (level[l, c] == '#')
                     {
                         walls.Add(new wall(game, new Vector2(l * game.tileSize, c * game.tileSize)));
