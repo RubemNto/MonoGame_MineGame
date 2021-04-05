@@ -109,12 +109,25 @@ namespace mineGame
                     else if (level[l, c] == 'h')
                     {
                     }
-                    else if (level[l, c] == 'x')
+                    else if (level[l, c] >= '1' && level[l,c] <= '9')//check which instance of portal must be added
                     {
-                        portals.Add(new Portal(game, new Vector2(l * game.tileSize, c * game.tileSize)));
+                        Console.WriteLine(int.Parse(level[l, c].ToString()));
+                        portals.Add(new Portal(game, new Vector2(l * game.tileSize, c * game.tileSize),int.Parse(level[l,c].ToString())-1));
                     }
                 }
             }
+            organizePortals(ref portals);
+        }
+
+        void organizePortals(ref List<Portal> list) 
+        {
+            Portal[] newList = new Portal[list.Count];            
+            foreach(Portal portal in list)
+            {
+                //Console.WriteLine(portal.index);
+                newList[portal.index] = portal;
+            }
+            list = new List<Portal>(newList);
         }
 
         public void printLevel(char[,] level)

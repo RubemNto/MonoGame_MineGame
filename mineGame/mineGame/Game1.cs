@@ -126,15 +126,15 @@ namespace mineGame
                                 }
                             }
                             break;
-                        case 'x':
-                            for (int c = 0; c < GM.portals.Count; c++)
-                            {
-                                if (GM.portals[c].pos == new Vector2(position.X, position.Y))
-                                {
-                                    _spriteBatch.Draw(GM.portals[c].texture,new Rectangle((int)GM.portals[c].pos.Y, (int)GM.portals[c].pos.X,tileSize,tileSize),null, Color.White,0f,new Vector2(0,0),SpriteEffects.None,0);
-                                }
-                            }
-                            break;
+                        //case 'x':
+                        //    for (int c = 0; c < GM.portals.Count; c++)
+                        //    {
+                        //        if (GM.portals[c].pos == new Vector2(position.X, position.Y))
+                        //        {
+                        //            _spriteBatch.Draw(GM.portals[c].texture,new Rectangle((int)GM.portals[c].pos.Y, (int)GM.portals[c].pos.X,tileSize,tileSize),null, Color.White,0f,new Vector2(0,0),SpriteEffects.None,0);
+                        //        }
+                        //    }
+                        //    break;
                         case 'p':
                             if (GM.player.faceRight == false)
                                 _spriteBatch.Draw(GM.player.texture, new Rectangle((int)GM.player._position.Y, (int)GM.player._position.X, tileSize, tileSize), null, Color.Red, 0f, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 1f);
@@ -179,6 +179,11 @@ namespace mineGame
                             break;
                     }
                 }
+            }
+
+            foreach (Portal portal in GM.portals)
+            {
+                _spriteBatch.Draw(portal.texture, new Rectangle((int)portal.pos.Y, (int)portal.pos.X, tileSize, tileSize), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
             }
             _spriteBatch.End();
 
