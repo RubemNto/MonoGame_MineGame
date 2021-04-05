@@ -60,14 +60,14 @@ namespace mineGame
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            this.backgroundMusic = Content.Load<Song>("Lazy Afternoon - Pushmo World Soundtrack");
+            this.backgroundMusic = Content.Load<Song>("backgroundmusic");
 
             MediaPlayer.Volume = 0.5f;
             //MediaPlayer.
             //MediaPlayer.
             //  Uncomment the following line will also loop the song
             MediaPlayer.IsRepeating = true;
-            //MediaPlayer.Play(backgroundMusic);
+            MediaPlayer.Play(backgroundMusic);
             //MediaPlayer.MediaStateChanged += MediaPlayer_MediaStateChanged;
 
             // TODO: use this.Content to load your game content here
