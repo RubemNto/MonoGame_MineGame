@@ -73,6 +73,12 @@
 /processorParam:Quality=Best
 /build:collection.wav
 
+#begin deathSound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:deathSound.wav
+
 #begin diamond.png
 /importer:TextureImporter
 /processor:TextureProcessor
