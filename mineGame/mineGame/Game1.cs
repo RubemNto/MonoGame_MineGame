@@ -67,7 +67,7 @@ namespace mineGame
             //MediaPlayer.
             //  Uncomment the following line will also loop the song
             MediaPlayer.IsRepeating = true;
-            //MediaPlayer.Play(backgroundMusic);
+            MediaPlayer.Play(backgroundMusic);
             //MediaPlayer.MediaStateChanged += MediaPlayer_MediaStateChanged;
 
             // TODO: use this.Content to load your game content here
@@ -183,7 +183,11 @@ namespace mineGame
 
             foreach (Portal portal in GM.portals)
             {
-                _spriteBatch.Draw(portal.texture, new Rectangle((int)portal.pos.Y, (int)portal.pos.X, tileSize, tileSize), null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
+                if(portal.index%2 == 0)
+                    _spriteBatch.Draw(portal.texture, new Rectangle((int)portal.pos.Y, (int)portal.pos.X, tileSize, tileSize), null, Color.Blue, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
+                else
+                    _spriteBatch.Draw(portal.texture, new Rectangle((int)portal.pos.Y, (int)portal.pos.X, tileSize, tileSize), null, Color.Orange, 0f, new Vector2(0, 0), SpriteEffects.None, 0);
+
             }
             _spriteBatch.End();
 
