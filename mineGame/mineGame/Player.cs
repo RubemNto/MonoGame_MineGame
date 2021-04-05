@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Threading;
 
@@ -325,7 +326,11 @@ namespace mineGame
         public void deadPlayer(Game1 g)
         {
             Texture2D tempTexture = g.Content.Load<Texture2D>("playerDead");
-
+            SoundEffect deathSound;
+            deathSound = g.Content.Load<SoundEffect>("deathSound");
+            deathSound.Play();
+            //MediaPlayer.Volume = 0.5f;
+            //MediaPlayer.Play(deathSound);
             // código para -1 vida, verificar se vidas são maiores ou = a zero
 
             //Apresentar o "Game Over" caso vidas = 0
