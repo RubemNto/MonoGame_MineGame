@@ -6,10 +6,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace mineGame
 {
-    class Zombie
+    class Ghost
     {
 
-        //___________________ Artificial "Inteligence"_______________________________//  
+        //___________________ ""Artificial Inteligence""_______________________________//  
 
         /*
                 - Prioriza a posição Y (horizontal) e depois a posição X (vertical)
@@ -25,7 +25,7 @@ namespace mineGame
         public Texture2D texture;
         public Vector2 pos;
 
-        public Zombie (Game1 g, Vector2 position)
+        public Ghost (Game1 g, Vector2 position)
         {
             texture = g.Content.Load<Texture2D>("sand");
             pos = position;
