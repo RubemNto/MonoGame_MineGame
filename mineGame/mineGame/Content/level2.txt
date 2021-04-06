@@ -1,22 +1,20 @@
-﻿# p  b        t                  # 
-#             t                  # 
-############################## ### 
-#####################            # 
-#####################            # 
-#d r   r r #      g              # 
-#  s ##### #         #####    #### 
-#sss #   x           #d b2#      1#
-#                    #####    #### 
-#        b                       # 
-#                             # x# 
-#                                # 
-#                                # 
-#                                # 
-#                                # 
-#                                # 
-#                                # 
-#                                # 
-#                                # 
-#                                # 
-#                                # 
-################################## 
+﻿tttttttttttttttttttttttttttttttttt
+t                                t
+tttttttttttttttttttttttttttttttttt
+t#####r1#########################t
+t ssssss#     ##          r      t
+t####ssb#2    ##   d      r   b3 t
+t#####d########  ################t
+t#######################rrr######t
+t   rrr s rs rsrss      rrr    4 t
+tdr ssss rsssssssr    ##sss      t
+t rsssssssrrs  rss    ##d        t
+t ########### ###################t
+t ###############################t
+t   #   ssrr d###                t
+t# ##   rbss ####                t
+t5p#8   sssr   ##                t
+t################ ###############t
+t6b7##########  #################t
+t################################t
+tttttttttttttttttttttttttttttttttt

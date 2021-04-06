@@ -84,7 +84,16 @@ namespace mineGame
 
             if(Keyboard.GetState().IsKeyDown(Keys.Space))
             {
-                Initialize();
+                if (GM.levelIndex != GM.levelNames.Length - 1)
+                    Initialize();
+                else 
+                {
+                    GM.levelIndex = 0;
+                    GM.changeLevel = true;
+                    GM.points = 0;
+                    Console.Clear();
+                    Initialize();
+                }
             }
 
             GM.UpdateGame(this,gameTime, ref pressingDown);
