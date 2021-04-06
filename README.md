@@ -14,3 +14,4 @@ Pixel boy miner is a game where the player must collect as many diamonds as poss
   After 3 seconds the bomb blows up
 * Creators:<br>
   <a href="https://github.com/RubemNto/">Rubem Fridolino Christ Neto</a> --> a19744
+<a href="https://github.com/Alexpicarvalho">Alexandre Pires Carvalho</a> --> a21094
