@@ -1,17 +1,3 @@
-#################
-#spssdds#sss2sss#
-#s sssss#sd  ssv#
-#s     s#ss  ss #
-#sssss s#s   ssd#
-#sssss 1#s   sss#
-###########rr####
-#h   bbs#sssdsss#
-#ssr  ss#dsssssd#
-#ssr4   #sbr r  #
-#ssrrr  #ssr3r  #
-#sssss  #  rrr  #
-####rrr##########
-#5ss   ss dddgss#
-#ssssssssvsssvss#
-#sssssssssssssss#
-#################
+###########
+# p      1#
+###########

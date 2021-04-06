@@ -14,7 +14,6 @@ namespace mineGame
         private Game1 game;
         private bool _useBomb = true;
         public bool dead = false;
-        //private bool moved = false;
         public bool faceRight = true;
         private char[] _direction = {
             'L','U','D', 'R'
@@ -57,9 +56,9 @@ namespace mineGame
         public void update(Game1 game, GameTime gameTime,ref bool pressingDown) 
         {
             KeyboardState keyboardState = Keyboard.GetState();
-            if (lives >= 0)
-            {
-                if (dead == false)
+            //if (lives >= 0)
+            //{
+                if (dead == false && lives >= 0)
                 {
                     checkOrientation(ref pressingDown, keyboardState);
                     moveTo(ref _position, _movementDestination, speed * (float)gameTime.ElapsedGameTime.TotalSeconds);
@@ -77,11 +76,7 @@ namespace mineGame
                 {
                     resetPos(game, gameTime, ref deadTimer);
                 }
-            }
-            else 
-            {
-                game.Exit();
-            }
+            //}
         }
 
         void moveTo(ref Vector2 originalPos,Vector2 destination,float Speed) 
@@ -236,13 +231,6 @@ namespace mineGame
                     return false;
                 }
             }
-            // for (int i = 0; i < game.GM.bombs.Count; i++)
-            // {
-            //     if (game.GM.bombs[i].pos == _movementDestination)
-            //     {
-            //         return false;
-            //     }
-            // }
             if (_movementDestination.X > game.windowHeight - 1 || _movementDestination.X < 0)
             {
                 return false;
@@ -258,18 +246,25 @@ namespace mineGame
 
         public void checkPortals()
         {
-            for (int i = 0; i < game.GM.portals.Count; i++)
+            if (_position != game.GM.portals[game.GM.portals.Count - 1].pos)
             {
-                if (game.GM.portals[i].pos == _position)
+                for (int i = 0; i < game.GM.portals.Count; i++)
                 {
-                    //game.GM.portals.RemoveAt(i);
-                    _position = game.GM.portals[i+1].pos;
-                    _movementDestination = game.GM.portals[i+1].pos;
-                    //game.GM.portals = game.GM.copyPortals;
-                    game.GM.portals.RemoveAt(i);
-                    initialPos = game.GM.portals[i].pos;
-                    game.GM.portals.RemoveAt(i);
+                    if (game.GM.portals[i].pos == _position)
+                    {
+                        //game.GM.portals.RemoveAt(i);
+                        _position = game.GM.portals[i + 1].pos;
+                        _movementDestination = game.GM.portals[i + 1].pos;
+                        //game.GM.portals = game.GM.copyPortals;
+                        game.GM.portals.RemoveAt(i);
+                        initialPos = game.GM.portals[i].pos;
+                        game.GM.portals.RemoveAt(i);
+                    }
                 }
+            }
+            else 
+            {
+                game.GM.changeLevel = true;
             }
         }
 
@@ -347,7 +342,7 @@ namespace mineGame
             deathSound = g.Content.Load<SoundEffect>("deathSound");
             deathSound.Play();
             lives--;
-            Console.WriteLine(lives);
+            //Console.WriteLine(lives);
             //MediaPlayer.Volume = 0.5f;
             //MediaPlayer.Play(deathSound);
             // código para -1 vida, verificar se vidas são maiores ou = a zero

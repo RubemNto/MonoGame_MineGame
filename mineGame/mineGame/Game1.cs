@@ -36,8 +36,16 @@ namespace mineGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            GM = new GameManager(this,0);
-            GM.loadLevel("level2.txt", out level);
+            if (GM == null)
+            {
+                GM = new GameManager(this, 0);
+            }
+            else
+            {
+                GM = new GameManager(this, GM.points, GM.levelIndex);
+            }
+            //Console.WriteLine(GM.levelIndex);
+            GM.loadLevel(GM.levelNames[GM.levelIndex], out level);
 
             windowHeight = level.GetLength(0) * tileSize;
             windowWidth = tileSize * level.GetLength(1);
@@ -63,14 +71,9 @@ namespace mineGame
             this.backgroundMusic = Content.Load<Song>("backgroundmusic");
 
             MediaPlayer.Volume = 0.5f;
-            //MediaPlayer.
-            //MediaPlayer.
-            //  Uncomment the following line will also loop the song
+            
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(backgroundMusic);
-            //MediaPlayer.MediaStateChanged += MediaPlayer_MediaStateChanged;
-
-            // TODO: use this.Content to load your game content here
         }
 
         protected override void Update(GameTime gameTime)
@@ -85,6 +88,20 @@ namespace mineGame
             }
 
             GM.UpdateGame(this,gameTime, ref pressingDown);
+            if (GM.changeLevel && GM.player.lives >= 0)
+            {
+                GM.levelIndex++;
+                GM.changeLevel = false;
+                Console.Clear();
+                Initialize();
+            }
+            else if (GM.changeLevel && GM.player.lives < 0)
+            {
+                GM.levelIndex = GM.levelNames.Length-1;
+                GM.changeLevel = false;
+                Console.Clear();
+                Initialize();
+            }
 
             // TODO: Add your update logic here
 

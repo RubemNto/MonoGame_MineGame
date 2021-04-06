@@ -21,9 +21,12 @@ namespace mineGame
         public List<Rock> rocks = new List<Rock>();
         public List<Ghost> ghosts = new List<Ghost>();
 
+        public string[] levelNames = {"level1.txt","level2.txt","endScreen.txt"};
 
+        public bool changeLevel = false;
 
-        private int points = 0;
+        public int levelIndex = 0;
+        public int points = 0;
 
         public Player player;
         //Song backgroundMusic;
@@ -31,6 +34,14 @@ namespace mineGame
 
         public GameManager(Game1 g,int pointsValue) 
         {
+            levelIndex = 0;
+            game = g;
+            points = pointsValue;
+        }
+
+        public GameManager(Game1 g, int pointsValue,int LevelIndex)
+        {
+            levelIndex = LevelIndex;
             game = g;
             points = pointsValue;
         }
@@ -43,27 +54,34 @@ namespace mineGame
 
         public void UpdateGame(Game1 game,GameTime gameTime,ref bool Input)
         {
-            player.update(game, gameTime,ref Input);
-            foreach (Rock rock in rocks)
+            if (!changeLevel)
             {
-                rock.update(gameTime,game);
+                if (player != null)
+                {
+                    if (player.lives < 0)
+                    {
+                        changeLevel = true;
+                    }
+                    else
+                    {
+                        player.update(game, gameTime, ref Input);
+                    }
+                }
+                foreach (Rock rock in rocks)
+                {
+                    rock.update(gameTime, game);
+                }
+
+                for (int i = 0; i < bombs.Count; i++)
+                {
+                    bombs[i].update(gameTime, game);
+                }
+
+                for (int i = 0; i < ghosts.Count; i++)
+                {
+                    ghosts[i].Update(game, gameTime);
+                }
             }
-
-            for (int i = 0; i < bombs.Count; i++)
-            {
-                bombs[i].update(gameTime, game);
-            }
-
-            for (int i = 0; i < ghosts.Count; i++)
-            {
-                ghosts[i].Update(game, gameTime);
-            }
-
-
-            //foreach (Bomb bomb in bombs)
-            //{
-            //    bomb.update(gameTime, game);
-            //}
         }
         //public List<wall> walls = new List<wall>();
 
