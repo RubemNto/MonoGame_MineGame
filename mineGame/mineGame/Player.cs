@@ -314,31 +314,20 @@ namespace mineGame
 
         public void deadPlayer(Game1 g)
         {
-            Texture2D tempTexture = g.Content.Load<Texture2D>("playerDead");
-            SoundEffect deathSound;
-            deathSound = g.Content.Load<SoundEffect>("deathSound");
-            deathSound.Play();
-            lives--;
-            //Console.WriteLine(lives);
-            //MediaPlayer.Volume = 0.5f;
-            //MediaPlayer.Play(deathSound);
-            // código para -1 vida, verificar se vidas são maiores ou = a zero
-
-            //Apresentar o "Game Over" caso vidas = 0
-
-            //Function to kill the player
-
-
-
-            dead = true;
-            texture = tempTexture;            
-           
-
+            if (!dead)
+            {
+                Texture2D tempTexture = g.Content.Load<Texture2D>("playerDead");
+                SoundEffect deathSound;
+                deathSound = g.Content.Load<SoundEffect>("deathSound");
+                deathSound.Play();
+                lives--;
+                dead = true;
+                texture = tempTexture;
+            }
         }
         
         public void resetPos(Game g, GameTime gameTime, ref float _deadTimer)
         {
-
             if (_deadTimer <= 0)
             {
                 texture = g.Content.Load<Texture2D>("player");
@@ -350,11 +339,6 @@ namespace mineGame
             {
                 _deadTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
-
-            
-
-
         }
-
     }
 }
