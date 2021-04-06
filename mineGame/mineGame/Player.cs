@@ -31,6 +31,7 @@ namespace mineGame
         public float speed;
         public float deadTimer = 2;
         public int numBombs = 0;
+        public int lives;
         
         SoundEffect moveSound;
         SoundEffect sandDestructionSound;
@@ -38,6 +39,7 @@ namespace mineGame
 
         public Player(Game1 g, Vector2 position)
         {
+            lives = 3;
             game = g;
             speed = game.tileSize * 8;
             moveSound = g.Content.Load<SoundEffect>("moveSoundEffect");
@@ -55,22 +57,30 @@ namespace mineGame
         public void update(Game1 game, GameTime gameTime,ref bool pressingDown) 
         {
             KeyboardState keyboardState = Keyboard.GetState();
-            if(dead == false) { 
-                checkOrientation(ref pressingDown, keyboardState);
-                moveTo(ref _position,_movementDestination, speed * (float)gameTime.ElapsedGameTime.TotalSeconds);
-                if (keyboardState.IsKeyDown(Keys.A) && numBombs > 0 && _useBomb == true)
+            if (lives >= 0)
+            {
+                if (dead == false)
                 {
-                    _useBomb = false;
-                    useBomb();
+                    checkOrientation(ref pressingDown, keyboardState);
+                    moveTo(ref _position, _movementDestination, speed * (float)gameTime.ElapsedGameTime.TotalSeconds);
+                    if (keyboardState.IsKeyDown(Keys.A) && numBombs > 0 && _useBomb == true)
+                    {
+                        _useBomb = false;
+                        useBomb();
+                    }
+                    else if (keyboardState.IsKeyUp(Keys.A))
+                    {
+                        _useBomb = true;
+                    }
                 }
-                else if (keyboardState.IsKeyUp(Keys.A))
+                else
                 {
-                    _useBomb = true;
+                    resetPos(game, gameTime, ref deadTimer);
                 }
             }
-            else
+            else 
             {
-                resetPos(game, gameTime, ref deadTimer);
+                game.Exit();
             }
         }
 
@@ -336,6 +346,8 @@ namespace mineGame
             SoundEffect deathSound;
             deathSound = g.Content.Load<SoundEffect>("deathSound");
             deathSound.Play();
+            lives--;
+            Console.WriteLine(lives);
             //MediaPlayer.Volume = 0.5f;
             //MediaPlayer.Play(deathSound);
             // código para -1 vida, verificar se vidas são maiores ou = a zero
