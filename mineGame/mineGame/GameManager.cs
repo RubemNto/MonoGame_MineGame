@@ -21,7 +21,7 @@ namespace mineGame
         public List<Rock> rocks = new List<Rock>();
         public List<Ghost> ghosts = new List<Ghost>();
 
-        public string[] levelNames = {"level1.txt","level2.txt","endScreen.txt"};
+        public string[] levelNames = {"level2.txt","level1.txt","endScreen.txt"};
 
         public bool changeLevel = false;
 

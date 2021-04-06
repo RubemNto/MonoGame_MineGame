@@ -15,6 +15,6 @@ t######                          t
 t                       #########t
 t  ####                 #########t
 t  #4 #                 ##       t
-t  ####                 ##       t
+t  ####                 ##     5 t
 tg                      #########t
 tttttttttttttttttttttttttttttttttt
