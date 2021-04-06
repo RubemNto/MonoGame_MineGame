@@ -37,7 +37,7 @@ namespace mineGame
         {
             // TODO: Add your initialization logic here
             GM = new GameManager(this,0);
-            GM.loadLevel("level2.txt", out level);
+            GM.loadLevel("level1.txt", out level);
 
             windowHeight = level.GetLength(0) * tileSize;
             windowWidth = tileSize * level.GetLength(1);

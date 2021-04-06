@@ -335,7 +335,7 @@ namespace mineGame
             Texture2D tempTexture = g.Content.Load<Texture2D>("playerDead");
             SoundEffect deathSound;
             deathSound = g.Content.Load<SoundEffect>("deathSound");
-            deathSound.Play();
+           
             //MediaPlayer.Volume = 0.5f;
             //MediaPlayer.Play(deathSound);
             // código para -1 vida, verificar se vidas são maiores ou = a zero
@@ -348,7 +348,7 @@ namespace mineGame
 
             dead = true;
             texture = tempTexture;            
-           
+            deathSound.Play();
 
         }
         
@@ -361,6 +361,7 @@ namespace mineGame
                 _movementDestination = initialPos;
                 _position = initialPos;
                 dead = false;
+                _deadTimer = 2;
             }
             else
             {
