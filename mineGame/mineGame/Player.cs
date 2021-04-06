@@ -246,28 +246,31 @@ namespace mineGame
 
         public void checkPortals()
         {
-            if (_position != game.GM.portals[game.GM.portals.Count - 1].pos)
+            if (game.GM.portals.Count != 0)
             {
-                for (int i = 0; i < game.GM.portals.Count; i++)
+                if (_position != game.GM.portals[game.GM.portals.Count - 1].pos)
                 {
-                    if (game.GM.portals[i].pos == _position)
+                    for (int i = 0; i < game.GM.portals.Count; i++)
                     {
-                        //game.GM.portals.RemoveAt(i);
-                        _position = game.GM.portals[i + 1].pos;
-                        _movementDestination = game.GM.portals[i + 1].pos;
-                        //game.GM.portals = game.GM.copyPortals;
-                        game.GM.portals.RemoveAt(i);
-                        initialPos = game.GM.portals[i].pos;
-                        if (game.GM.portals.Count > 1)
+                        if (game.GM.portals[i].pos == _position)
                         {
+                            //game.GM.portals.RemoveAt(i);
+                            _position = game.GM.portals[i + 1].pos;
+                            _movementDestination = game.GM.portals[i + 1].pos;
+                            //game.GM.portals = game.GM.copyPortals;
                             game.GM.portals.RemoveAt(i);
+                            initialPos = game.GM.portals[i].pos;
+                            if (game.GM.portals.Count > 1)
+                            {
+                                game.GM.portals.RemoveAt(i);
+                            }
                         }
                     }
                 }
-            }
-            else
-            {
-                game.GM.changeLevel = true;
+                else
+                {
+                    game.GM.changeLevel = true;
+                }
             }
         }
 

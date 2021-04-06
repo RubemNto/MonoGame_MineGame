@@ -12,6 +12,7 @@ namespace mineGame
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private SpriteFont font;
         Rectangle position;
 
         public GameManager GM;
@@ -69,6 +70,7 @@ namespace mineGame
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             this.backgroundMusic = Content.Load<Song>("backgroundmusic");
+            font = Content.Load<SpriteFont>("font");
 
             MediaPlayer.Volume = 0.5f;
 
@@ -84,16 +86,22 @@ namespace mineGame
 
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
             {
+                //if (GM.levelIndex != GM.levelNames.Length - 1)
+                //    Initialize();
+                //else
+                //{
+                //GM.player.lives--;
+                //Initialize();
                 if (GM.levelIndex != GM.levelNames.Length - 1)
-                    Initialize();
-                else
-                {
-                    GM.levelIndex = 0;
-                    GM.changeLevel = true;
-                    GM.points = 0;
+                {       //GM.levelIndex = 0;
+                    //GM.changeLevel = true;
+                    //GM.points = 0;
                     Console.Clear();
-                    Initialize();
+                    GM.player.resetPos(this, gameTime,ref GM.player.deadTimer);
+                    GM.player.deadPlayer(this);
+                    //Initialize();
                 }
+                //}
             }
 
             GM.UpdateGame(this, gameTime, ref pressingDown);
@@ -119,9 +127,11 @@ namespace mineGame
 
         protected override void Draw(GameTime gameTime)
         {
-
             GraphicsDevice.Clear(Color.Black);
             _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, DepthStencilState.None, null);
+            _spriteBatch.DrawString(font, "Lives: " + GM.player.lives.ToString(), new Vector2(tileSize*5,tileSize), Color.White);
+            _spriteBatch.DrawString(font, "Bombs: " + GM.player.numBombs.ToString(), new Vector2(tileSize*15, tileSize), Color.White);
+            _spriteBatch.DrawString(font, "Points: " + GM.points.ToString(), new Vector2(tileSize * 25, tileSize), Color.White);
             position = new Rectangle(0, 0, tileSize, tileSize);
             //_spriteBatch.Draw(GM.walls[0].texture, new Rectangle(0,64, tileSize, tileSize), null, Color.Green, 0f, new Vector2(0, 0), SpriteEffects.None, 10f);
 
