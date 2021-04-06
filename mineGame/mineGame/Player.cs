@@ -38,7 +38,7 @@ namespace mineGame
 
         public Player(Game1 g, Vector2 position)
         {
-            lives = 3;
+            lives = 2;
             game = g;
             speed = game.tileSize * 8;
             moveSound = g.Content.Load<SoundEffect>("moveSoundEffect");
@@ -83,29 +83,24 @@ namespace mineGame
         {
             if (originalPos != destination)
             {
-                //Console.WriteLine($"moving from " + originalPos + " to " + destination);
                 Vector2 diference = destination - originalPos;
                 originalPos += Vector2.Normalize(diference) * Speed;
                 if (originalPos.X < destination.X && diference.X < 0)
                 {
                     originalPos = destination;
-                    //Console.WriteLine("moving {0} from {1} to {2}", "player", originalPos, destination);
                 }
                 else if (originalPos.X > destination.X && diference.X > 0)
                 {
                     originalPos = destination;
-                    //Console.WriteLine("moving {0} from {1} to {2}","player",originalPos,destination);
                 }
 
                 if (originalPos.Y < destination.Y && diference.Y < 0)
                 {
                     originalPos = destination;
-                    //Console.WriteLine("moving {0} from {1} to {2}","player",originalPos,destination);
                 }
                 else if (originalPos.Y > destination.Y && diference.Y > 0)
                 {
                     originalPos = destination;
-                    //Console.WriteLine("moving {0} from {1} to {2}","player",originalPos,destination);
                 }
             }
 
@@ -114,7 +109,6 @@ namespace mineGame
         void checkOrientation(ref bool pressingKeyDown, KeyboardState keyboardState)
         {
 
-            //_movementDestination = _position;
             if (!pressingKeyDown)
             {
 
@@ -160,7 +154,6 @@ namespace mineGame
                 if (freeSpace() == false && pressingKeyDown == true)
                 {
                     _movementDestination = pastPosition;
-                    //moved = false;
                 }
 
                 //play sound when move
@@ -254,10 +247,8 @@ namespace mineGame
                     {
                         if (game.GM.portals[i].pos == _position)
                         {
-                            //game.GM.portals.RemoveAt(i);
                             _position = game.GM.portals[i + 1].pos;
                             _movementDestination = game.GM.portals[i + 1].pos;
-                            //game.GM.portals = game.GM.copyPortals;
                             game.GM.portals.RemoveAt(i);
                             initialPos = game.GM.portals[i].pos;
                             if (game.GM.portals.Count > 1)
@@ -281,16 +272,11 @@ namespace mineGame
             {
                 if (game.GM.rocks[i].pos == _position + new Vector2(0, game.tileSize) && _dir == 'R') //check rocks at the right
                 {
-
                     game.GM.rocks[i].updatePosition(game.GM.rocks[i].pos + new Vector2(0, game.tileSize), game);
-                    //_movementDestination = new Vector2(_position.X, _position.Y + 32);
-
                 }
                 else if (game.GM.rocks[i].pos == _position - new Vector2(0, game.tileSize) && _dir == 'L') //check rocks at the left
                 {
-
                     game.GM.rocks[i].updatePosition(game.GM.rocks[i].pos - new Vector2(0, game.tileSize), game);
-                    //_movementDestination = new Vector2(_position.X, _position.Y - 32);
                 }
             }
         }

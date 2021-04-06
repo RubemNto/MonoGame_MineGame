@@ -45,7 +45,6 @@ namespace mineGame
             {
                 GM = new GameManager(this, GM.points, GM.levelIndex);
             }
-            //Console.WriteLine(GM.levelIndex);
             GM.loadLevel(GM.levelNames[GM.levelIndex], out level);
 
             windowHeight = level.GetLength(0) * tileSize;
@@ -57,14 +56,13 @@ namespace mineGame
             base.Initialize();
         }
 
-        void MediaPlayer_MediaStateChanged(object sender, System.EventArgs e)
-        {
-            //0.0f is silent, 1.0f is full volume
-            MediaPlayer.Volume = 0f;
-            MediaPlayer.IsRepeating = true;
-
-            MediaPlayer.Play(backgroundMusic);
-        }
+        //void MediaPlayer_MediaStateChanged(object sender, System.EventArgs e)
+        //{
+        //    //0.0f is silent, 1.0f is full volume
+        //    MediaPlayer.Volume = 0f;
+        //    MediaPlayer.IsRepeating = true;
+        //    MediaPlayer.Play(backgroundMusic);
+        //}
 
         protected override void LoadContent()
         {
@@ -75,7 +73,7 @@ namespace mineGame
             MediaPlayer.Volume = 0.5f;
 
             MediaPlayer.IsRepeating = true;
-            MediaPlayer.Play(backgroundMusic);
+            //MediaPlayer.Play(backgroundMusic);
         }
 
         protected override void Update(GameTime gameTime)
@@ -86,22 +84,13 @@ namespace mineGame
 
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
             {
-                //if (GM.levelIndex != GM.levelNames.Length - 1)
-                //    Initialize();
-                //else
-                //{
-                //GM.player.lives--;
-                //Initialize();
-                if (GM.levelIndex != GM.levelNames.Length - 1)
-                {       //GM.levelIndex = 0;
-                    //GM.changeLevel = true;
-                    //GM.points = 0;
-                    Console.Clear();
-                    GM.player.resetPos(this, gameTime,ref GM.player.deadTimer);
-                    GM.player.deadPlayer(this);
-                    //Initialize();
+                if (GM.levelIndex == GM.levelNames.Length - 1)
+                {       
+                    GM.levelIndex = 0;
+                    GM.points = 0;
+                    GM.changeLevel = true;
+                    Initialize();
                 }
-                //}
             }
 
             GM.UpdateGame(this, gameTime, ref pressingDown);
@@ -129,11 +118,19 @@ namespace mineGame
         {
             GraphicsDevice.Clear(Color.Black);
             _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, DepthStencilState.None, null);
-            _spriteBatch.DrawString(font, "Lives: " + GM.player.lives.ToString(), new Vector2(tileSize*5,tileSize), Color.White);
-            _spriteBatch.DrawString(font, "Bombs: " + GM.player.numBombs.ToString(), new Vector2(tileSize*15, tileSize), Color.White);
-            _spriteBatch.DrawString(font, "Points: " + GM.points.ToString(), new Vector2(tileSize * 25, tileSize), Color.White);
+
+            if (GM.levelIndex == GM.levelNames.Length - 1)
+            {
+                _spriteBatch.DrawString(font, "GAME OVER", new Vector2(tileSize * 12, tileSize * 3), Color.White);
+                _spriteBatch.DrawString(font, "Points: " + GM.points.ToString(), new Vector2(tileSize * 12, tileSize), Color.White);
+            }
+            else 
+            {
+                _spriteBatch.DrawString(font, "Lives: " + (GM.player.lives+1).ToString(), new Vector2(tileSize * 5, tileSize), Color.White);
+                _spriteBatch.DrawString(font, "Bombs: " + GM.player.numBombs.ToString(), new Vector2(tileSize * 15, tileSize), Color.White);
+                _spriteBatch.DrawString(font, "Points: " + GM.points.ToString(), new Vector2(tileSize * 25, tileSize), Color.White);
+            }
             position = new Rectangle(0, 0, tileSize, tileSize);
-            //_spriteBatch.Draw(GM.walls[0].texture, new Rectangle(0,64, tileSize, tileSize), null, Color.Green, 0f, new Vector2(0, 0), SpriteEffects.None, 10f);
 
             for (int i = 0; i < level.GetLength(0); i++)
             {
@@ -171,15 +168,6 @@ namespace mineGame
                                 }
                             }
                             break;
-                        //case 'x':
-                        //    for (int c = 0; c < GM.portals.Count; c++)
-                        //    {
-                        //        if (GM.portals[c].pos == new Vector2(position.X, position.Y))
-                        //        {
-                        //            _spriteBatch.Draw(GM.portals[c].texture,new Rectangle((int)GM.portals[c].pos.Y, (int)GM.portals[c].pos.X,tileSize,tileSize),null, Color.White,0f,new Vector2(0,0),SpriteEffects.None,0);
-                        //        }
-                        //    }
-                        //    break;
                         case 'p':
                             if (GM.player.faceRight == false)
                             {
@@ -195,12 +183,7 @@ namespace mineGame
                         case 'r':
                             for (int c = 0; c < GM.rocks.Count; c++)
                             {
-                                //if (GM.rocks[c].pos == new Vector2(position.X, position.Y))
-                                //{
-                                //Console.WriteLine("{0} -> {1}", GM.rocks[c].pos, position);
-                                //Console.WriteLine("DrawingRock");
                                 _spriteBatch.Draw(GM.rocks[c].texture, new Rectangle((int)GM.rocks[c].pos.Y, (int)GM.rocks[c].pos.X, tileSize, tileSize), null, Color.Brown, 0f, new Vector2(0, 0), SpriteEffects.None, 1f);
-                                //}
                             }
                             break;
                         case 'b':

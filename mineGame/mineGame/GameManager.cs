@@ -27,7 +27,7 @@ namespace mineGame
 
         public int levelIndex = 0;
         public int points = 0;
-
+       
         public Player player;
         //Song backgroundMusic;
 
