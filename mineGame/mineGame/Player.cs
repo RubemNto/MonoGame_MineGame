@@ -14,7 +14,6 @@ namespace mineGame
         private Game1 game;
         private bool _useBomb = true;
         public bool dead = false;
-        //private bool moved = false;
         public bool faceRight = true;
         private char[] _direction = {
             'L','U','D', 'R'
@@ -31,13 +30,15 @@ namespace mineGame
         public float speed;
         public float deadTimer = 2;
         public int numBombs = 0;
-        
+        public int lives;
+
         SoundEffect moveSound;
         SoundEffect sandDestructionSound;
         SoundEffect collectionSound;
 
         public Player(Game1 g, Vector2 position)
         {
+            lives = 3;
             game = g;
             speed = game.tileSize * 8;
             moveSound = g.Content.Load<SoundEffect>("moveSoundEffect");
@@ -52,12 +53,15 @@ namespace mineGame
         }
 
 
-        public void update(Game1 game, GameTime gameTime,ref bool pressingDown) 
+        public void update(Game1 game, GameTime gameTime, ref bool pressingDown)
         {
             KeyboardState keyboardState = Keyboard.GetState();
-            if(dead == false) { 
+            //if (lives >= 0)
+            //{
+            if (dead == false && lives >= 0)
+            {
                 checkOrientation(ref pressingDown, keyboardState);
-                moveTo(ref _position,_movementDestination, speed * (float)gameTime.ElapsedGameTime.TotalSeconds);
+                moveTo(ref _position, _movementDestination, speed * (float)gameTime.ElapsedGameTime.TotalSeconds);
                 if (keyboardState.IsKeyDown(Keys.A) && numBombs > 0 && _useBomb == true)
                 {
                     _useBomb = false;
@@ -72,9 +76,10 @@ namespace mineGame
             {
                 resetPos(game, gameTime, ref deadTimer);
             }
+            //}
         }
 
-        void moveTo(ref Vector2 originalPos,Vector2 destination,float Speed) 
+        void moveTo(ref Vector2 originalPos, Vector2 destination, float Speed)
         {
             if (originalPos != destination)
             {
@@ -108,7 +113,7 @@ namespace mineGame
 
         void checkOrientation(ref bool pressingKeyDown, KeyboardState keyboardState)
         {
-            
+
             //_movementDestination = _position;
             if (!pressingKeyDown)
             {
@@ -149,7 +154,7 @@ namespace mineGame
                     checkRocks();
                     checkBomb();
                 }
-                
+
 
                 ////check collision with walls
                 if (freeSpace() == false && pressingKeyDown == true)
@@ -159,7 +164,7 @@ namespace mineGame
                 }
 
                 //play sound when move
-                if (_movementDestination != pastPosition && pressingKeyDown == true) 
+                if (_movementDestination != pastPosition && pressingKeyDown == true)
                 {
                     moveSound.Play(0.5f, 1f, 0f);
                 }
@@ -193,7 +198,7 @@ namespace mineGame
             {
                 foreach (Ghost ghost in game.GM.ghosts)
                 {
-                    ghost.ghostSpeed = game.tileSize *2;
+                    ghost.ghostSpeed = game.tileSize * 2;
                 }
                 if (keyboardState.IsKeyUp(Keys.Up) && keyboardState.IsKeyUp(Keys.Down) && keyboardState.IsKeyUp(Keys.Left) && keyboardState.IsKeyUp(Keys.Right) && _position == _movementDestination)
                 {
@@ -226,13 +231,6 @@ namespace mineGame
                     return false;
                 }
             }
-            // for (int i = 0; i < game.GM.bombs.Count; i++)
-            // {
-            //     if (game.GM.bombs[i].pos == _movementDestination)
-            //     {
-            //         return false;
-            //     }
-            // }
             if (_movementDestination.X > game.windowHeight - 1 || _movementDestination.X < 0)
             {
                 return false;
@@ -248,18 +246,28 @@ namespace mineGame
 
         public void checkPortals()
         {
-            for (int i = 0; i < game.GM.portals.Count; i++)
+            if (_position != game.GM.portals[game.GM.portals.Count - 1].pos)
             {
-                if (game.GM.portals[i].pos == _position)
+                for (int i = 0; i < game.GM.portals.Count; i++)
                 {
-                    //game.GM.portals.RemoveAt(i);
-                    _position = game.GM.portals[i+1].pos;
-                    _movementDestination = game.GM.portals[i+1].pos;
-                    //game.GM.portals = game.GM.copyPortals;
-                    game.GM.portals.RemoveAt(i);
-                    initialPos = game.GM.portals[i].pos;
-                    game.GM.portals.RemoveAt(i);
+                    if (game.GM.portals[i].pos == _position)
+                    {
+                        //game.GM.portals.RemoveAt(i);
+                        _position = game.GM.portals[i + 1].pos;
+                        _movementDestination = game.GM.portals[i + 1].pos;
+                        //game.GM.portals = game.GM.copyPortals;
+                        game.GM.portals.RemoveAt(i);
+                        initialPos = game.GM.portals[i].pos;
+                        if (game.GM.portals.Count > 1)
+                        {
+                            game.GM.portals.RemoveAt(i);
+                        }
+                    }
                 }
+            }
+            else
+            {
+                game.GM.changeLevel = true;
             }
         }
 
@@ -270,15 +278,15 @@ namespace mineGame
             {
                 if (game.GM.rocks[i].pos == _position + new Vector2(0, game.tileSize) && _dir == 'R') //check rocks at the right
                 {
-                    
-                    game.GM.rocks[i].updatePosition(game.GM.rocks[i].pos + new Vector2(0, game.tileSize),game);
+
+                    game.GM.rocks[i].updatePosition(game.GM.rocks[i].pos + new Vector2(0, game.tileSize), game);
                     //_movementDestination = new Vector2(_position.X, _position.Y + 32);
-                    
+
                 }
                 else if (game.GM.rocks[i].pos == _position - new Vector2(0, game.tileSize) && _dir == 'L') //check rocks at the left
                 {
-                    
-                    game.GM.rocks[i].updatePosition(game.GM.rocks[i].pos - new Vector2(0, game.tileSize),game);
+
+                    game.GM.rocks[i].updatePosition(game.GM.rocks[i].pos - new Vector2(0, game.tileSize), game);
                     //_movementDestination = new Vector2(_position.X, _position.Y - 32);
                 }
             }
@@ -291,7 +299,7 @@ namespace mineGame
             game.GM.bombs.Add(newBomb);
             numBombs--;
         }
-        
+
         public void checkBomb()
         {
             for (int i = 0; i < game.GM.bombs.Count; i++)
@@ -302,76 +310,35 @@ namespace mineGame
                     numBombs++;
                 }
             }
-
-            //get all bombs in list
-            // for (int i = 0; i < game.GM.bombs.Count; i++)
-            // {
-            //     if (game.GM.bombs[i].pos == _position + new Vector2(0, game.tileSize) && _dir == 'R') //check rocks at the right
-            //     {
-            //
-            //         game.GM.bombs[i].updatePosition(game.GM.bombs[i].pos + new Vector2(0, 64), game);
-            //         //_movementDestination = new Vector2(_position.X, _position.Y + 32);
-            //
-            //     }
-            //     else if (game.GM.bombs[i].pos == _position - new Vector2(0, game.tileSize) && _dir == 'L') //check rocks at the left
-            //     {
-            //
-            //         game.GM.bombs[i].updatePosition(game.GM.bombs[i].pos - new Vector2(0, 64), game);
-            //         //_movementDestination = new Vector2(_position.X, _position.Y - 32);
-            //     }
-            //     else if (game.GM.bombs[i].pos == _position + new Vector2(game.tileSize, 0) && _dir == 'D')
-            //     {
-            //         game.GM.bombs[i].updatePosition(game.GM.bombs[i].pos + new Vector2(32, 0), game);
-            //     }
-            //     else if (game.GM.bombs[i].pos == _position - new Vector2(game.tileSize, 0) && _dir == 'U')
-            //     {
-            //         game.GM.bombs[i].updatePosition(game.GM.bombs[i].pos - new Vector2(32, 0), game);
-            //     }
-            // }
         }
 
         public void deadPlayer(Game1 g)
         {
-            Texture2D tempTexture = g.Content.Load<Texture2D>("playerDead");
-            SoundEffect deathSound;
-            deathSound = g.Content.Load<SoundEffect>("deathSound");
-           
-            //MediaPlayer.Volume = 0.5f;
-            //MediaPlayer.Play(deathSound);
-            // código para -1 vida, verificar se vidas são maiores ou = a zero
-
-            //Apresentar o "Game Over" caso vidas = 0
-
-            //Function to kill the player
-
-
-
-            dead = true;
-            texture = tempTexture;            
-            deathSound.Play();
-
+            if (!dead)
+            {
+                Texture2D tempTexture = g.Content.Load<Texture2D>("playerDead");
+                SoundEffect deathSound;
+                deathSound = g.Content.Load<SoundEffect>("deathSound");
+                deathSound.Play();
+                lives--;
+                dead = true;
+                texture = tempTexture;
+            }
         }
-        
+
         public void resetPos(Game g, GameTime gameTime, ref float _deadTimer)
         {
-
             if (_deadTimer <= 0)
             {
                 texture = g.Content.Load<Texture2D>("player");
                 _movementDestination = initialPos;
                 _position = initialPos;
                 dead = false;
-                _deadTimer = 2;
             }
             else
             {
                 _deadTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
-
-            
-
-
         }
-
     }
 }
